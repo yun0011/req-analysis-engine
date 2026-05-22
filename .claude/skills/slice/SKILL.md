@@ -238,37 +238,44 @@ if enrollment.Status != REQUESTED {
   - `meta.requiresAuth: true` → `actor: "authenticated_user"`
   - 없음 → `actor: "unauthenticated_user"`
 
-**`client_behaviors.json` 형식 안내:**
+**`component_map.json`의 `validation_messages` + `api_params` 활용:**
 
-`vue_output/client_behaviors.json`은 이제 타입 분류된 행동 목록이 아니라
-컴포넌트별 **관찰 가능 출력의 raw 사실**을 담는다.
+`vue_output/component_map.json`의 각 컴포넌트 항목에는 두 필드가 추가되어 있다.
 
 ```json
 {
-  "components": [
+  "file": "views/admin/academic_manage/lecture/AddLecture.vue",
+  "validation_messages": [
     {
-      "component": "views/archive/Archive.vue",
-      "observable_facts": {
-        "user_messages": [
-          {
-            "message": "첫번째 페이지입니다.",
-            "preceding_context": "prevPage() { if (this.offsetList.length <= 1) {",
-            "component": "views/archive/Archive.vue"
-          }
-        ],
-        "conditional_renders": ["term.status !== 'FINISHED'"],
-        "disabled_conditions": ["!isAdmin || term.status === 'FINISHED'"],
-        "click_handlers": ["prevPage", "nextPage"],
-        "polling": [{"interval_ms": 3000}],
-        "has_loading_state": true,
-        "lifecycle_calls": ["loadList"]
-      }
+      "message": "올바른 배움 과정을 입력해주세요.",
+      "condition": "document.querySelectorAll(\".btn_tag.selected\").length === 0",
+      "type": "validation"
+    },
+    {
+      "message": "올바른 분류를 입력해주세요.",
+      "condition": "!this.category",
+      "type": "validation"
+    }
+  ],
+  "api_params": [
+    {
+      "method": "addLecture",
+      "params": ["sessionID", "courseID", "category", "classroom", "limit", "schedule", "description", "file", "attachmentUrl"]
     }
   ]
 }
 ```
 
-이 파일은 slice 단계에서 직접 소비하지 않는다. derive 단계에서 LLM이 해석한다.
+**활용 방법**: CL Rule Record 생성 시 `validation_messages`와 `api_params`를 함께 읽어
+"이 validation 메시지가 어떤 API 파라미터와 연결되는가"를 판단한다.
+
+- `condition`에서 변수명(`!this.category` → `category`)을 추출 → `api_params`의 `params` 목록과 대조
+- 조건이 복잡하면(`btn_tag.selected`) 메시지 텍스트("배움 과정")로 의미 파악 → `description` 파라미터와 연결 (코드에서 `this.description = tags.join(", ")` 확인)
+- 이 연결 판단은 **코드에서 근거를 인용**해야 한다. 인용 불가 시 `confidence: "low"`로 표시.
+
+**왜 이 방식인가**: `string` 타입 파라미터가 UI 선택 위젯의 값을 인코딩하는 경우(예: 버튼 그룹 → `description` 필드), 백엔드 타입만으로는 알 수 없다. validation 메시지와 API 파라미터 목록을 쌍으로 제공해 LLM이 두 단서를 연결하게 한다.
+
+이 파일은 slice 단계의 Step 4-c에서 CL Rule Record 생성 시 소비한다.
 
 **결과 저장**
 

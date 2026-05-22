@@ -448,6 +448,70 @@ def extract_confirmation_guards(script: str) -> list[dict]:
     return guards
 
 
+def extract_validation_messages(script: str) -> list[dict]:
+    """
+    $swal("메시지") 호출에서 validation 메시지를 추출한다.
+    각 메시지와 함께 그 메시지를 발생시키는 if 조건을 추출한다.
+
+    반환 형태:
+      { message, condition, type }
+        - type: "validation" (return false 동반) | "success" | "error" | "info"
+    """
+    messages = []
+
+    for m in re.finditer(r'\.\$swal\s*\(\s*[\'"]([^\'"]{2,100})[\'"]\s*\)', script):
+        msg_text = m.group(1)
+        msg_pos  = m.start()
+
+        # 메시지 앞 400자에서 가장 가까운 if 조건 탐지
+        context_before = script[max(0, msg_pos - 400):msg_pos]
+        if_matches = list(re.finditer(r'if\s*\(([^)]{3,200})\)', context_before))
+        condition = if_matches[-1].group(1).strip() if if_matches else None
+
+        # 메시지 뒤 80자에서 return false 탐지 → validation 타입
+        context_after = script[msg_pos:msg_pos + 80]
+        if re.search(r'return\s+false', context_after):
+            msg_type = "validation"
+        elif any(kw in msg_text for kw in ('완료', '성공', '추가되었', '수정되었', '삭제되었', '저장되었')):
+            msg_type = "success"
+        elif any(kw in msg_text for kw in ('오류', '실패', '없습니다', '에러')):
+            msg_type = "error"
+        else:
+            msg_type = "info"
+
+        messages.append({
+            "message":   msg_text,
+            "condition": condition,
+            "type":      msg_type,
+        })
+
+    return messages
+
+
+def extract_api_params(script: str, api_map: dict) -> list[dict]:
+    """
+    Client.methodName(...) 호출에서 메서드명과 파라미터 이름 목록을 추출한다.
+    api_map에서 파라미터명을 가져온다 (값 파싱은 하지 않음).
+
+    반환 형태:
+      { method, params: [param_name, ...] }
+    """
+    results = []
+    seen = set()
+
+    for m in re.finditer(r'Client\.(\w+)\s*\(', script):
+        method_name = m.group(1)
+        if method_name in seen or method_name not in api_map:
+            continue
+        seen.add(method_name)
+        results.append({
+            "method": method_name,
+            "params": api_map[method_name].get("params", []),
+        })
+
+    return results
+
+
 def extract_disabled_guards(template: str) -> list[dict]:
     """:disabled 바인딩에서 도메인 상태 기반 가드 탐지.
     속성값이 따옴표를 포함할 수 있으므로 균형잡힌 따옴표 추출."""
@@ -597,6 +661,8 @@ def process_vue_file(file_path: str, rel_path: str, api_map: dict) -> dict:
     table_columns = extract_table_columns(template)
     form_fields = extract_form_fields(template)
     vfor_fields = extract_vfor_fields(template)
+    validation_messages = extract_validation_messages(script)
+    api_params = extract_api_params(script, api_map)
 
     # Client 메서드 → URL 해석
     resolved_calls = []
@@ -625,6 +691,8 @@ def process_vue_file(file_path: str, rel_path: str, api_map: dict) -> dict:
         "table_columns": table_columns,
         "form_fields": form_fields,
         "vfor_fields": vfor_fields,
+        "validation_messages": validation_messages,
+        "api_params": api_params,
     }
 
 
@@ -992,6 +1060,9 @@ def main():
     for comp in components:
         if not comp["client_calls"] and not comp["store_dispatches"]:
             continue  # API 호출 없는 순수 UI 컴포넌트 제외
+        # validation 메시지가 있는 컴포넌트만 포함 (노이즈 제거)
+        val_msgs = [v for v in comp.get("validation_messages", []) if v["type"] == "validation"]
+
         entry = {
             "file": comp["file"],
             "route": comp.get("route"),
@@ -1002,6 +1073,9 @@ def main():
             "has_conditional_api": bool(comp["conditional_api_branches"]),
             "has_auto_load": bool(comp["lifecycle_auto_calls"]),
             "has_confirmation_guard": bool(comp["confirmation_guards"]),
+            # AI 연결용: validation 메시지 + API 파라미터명
+            "validation_messages": val_msgs,
+            "api_params": comp.get("api_params", []),
         }
         for call in comp["resolved_api_calls"]:
             fr_info = {}
@@ -1111,6 +1185,15 @@ def main():
     print(f"    confirmation_guard:  {conf_count}개")
     print(f"    disabled_guard:      {disabled_ct}개")
     print(f"  client_only_reqs.json — {len(client_reqs)}개 클라이언트 전용 요구사항")
+
+    # validation_messages 통계
+    comps_with_validation = sum(
+        1 for c in component_map if c.get("validation_messages")
+    )
+    total_val_msgs = sum(
+        len(c.get("validation_messages", [])) for c in component_map
+    )
+    print(f"\n  validation_messages   — {total_val_msgs}개 메시지 / {comps_with_validation}개 컴포넌트")
 
     # FR 커버리지 (ui_evidence 있는 FR 수)
     covered = sum(1 for frs in fr_ui_map.values() if frs)

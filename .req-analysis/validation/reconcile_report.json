@@ -1,117 +1,52 @@
 {
   "generated_at": "2026-05-22",
   "summary": {
-    "enum_domains_verified": 8,
-    "documents_scanned": ["6_structured_spec.json"],
-    "total_fixes_applied": 17,
+    "enum_domains_verified": 9,
+    "documents_scanned": [
+      "spec/functional_requirements.json",
+      "spec/ui_requirements.md"
+    ],
+    "total_fixes_applied": 0,
     "remaining_conflicts": 0
   },
   "truth_priority": [
     "1순위: Go types/*.go (백엔드 enum 정의)",
-    "2순위: vue_output/display_labels.json (extract_client.py 정적 추출)",
-    "3순위: 6_structured_spec.json (LLM 생성, 주 수정 대상)"
+    "2순위: spec/ui_requirements.md (display_labels.json에서 정적 추출)",
+    "3순위: spec/functional_requirements.json (LLM 생성, 주 수정 대상)"
   ],
   "canonical_enums": {
-    "TermStatus": ["READY", "APPLYING", "PROCEEDING", "FINISHED"],
-    "Semester": ["SPRING", "FALL"],
-    "StudentStatus": ["ATTENDING", "LEAVE", "GRADUATED", "COMPLETED", "EXPELLED"],
-    "Grade": ["H1", "H2", "H3", "H4", "D1", "D2", "DJ"],
-    "RegistrationStatus": ["WAITING", "APPROVED"],
-    "RequestStatus": ["PENDING", "DONE"],
     "LectureCategory": ["RP", "RW", "RU", "RT", "EP", "EW", "EU", "ET"],
-    "BoardType": ["NOTICE", "REGULATION", "CALENDAR"],
-    "AttendanceStatus": ["ATTEND", "TARDY", "HALF_TARDY", "ABSENCE", "EXCUSED_ABSENCE", "EARLY_LEAVE"]
+    "AttendanceStatus": ["ATTEND", "TARDY", "HALF_TARDY", "ABSENCE", "EXCUSED_ABSENCE", "EARLY_LEAVE"],
+    "Semester": ["SPRING", "FALL"],
+    "TermStatus": ["READY", "APPLYING", "PROCEEDING", "FINISHED"],
+    "Grade": ["H1", "H2", "H3", "H4", "D1", "D2", "DJ"],
+    "StudentStatus": ["ATTENDING", "LEAVE", "GRADUATED", "COMPLETED", "EXPELLED"],
+    "RequestStatus": ["PENDING", "DONE"],
+    "RegistrationStatus": ["WAITING", "APPROVED"],
+    "BoardType": ["NOTICE", "REGULATION", "CALENDAR"]
   },
-  "fixes_applied": [
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "wrong_enum_value",
-      "domain": "BoardType",
-      "pattern_found": "\"type\": \"notice\"",
-      "replacement": "\"type\": \"NOTICE\"",
-      "count": 4,
-      "root_cause": "LLM이 Vue route namespace(/notice)를 BoardType enum 값으로 혼동. Go 정의는 대문자 NOTICE",
-      "authority": "Go types/board.go: BoardType = NOTICE | REGULATION | CALENDAR",
-      "vue_verification": "AddNotice.vue에서 'NOTICE' 문자열 리터럴 사용 확인"
-    },
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "wrong_enum_value",
-      "domain": "BoardType",
-      "pattern_found": "\"type\": \"rule\"",
-      "replacement": "\"type\": \"REGULATION\"",
-      "count": 4,
-      "root_cause": "LLM이 Vue route namespace(/rule)를 BoardType enum 값으로 혼동. Go 정의는 REGULATION",
-      "authority": "Go types/board.go: BoardType = NOTICE | REGULATION | CALENDAR",
-      "vue_verification": "Rule.vue에서 'REGULATION' 문자열 리터럴 사용 확인"
-    },
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "wrong_enum_value",
-      "domain": "BoardType",
-      "pattern_found": "\"type\": \"schedule\"",
-      "replacement": "\"type\": \"CALENDAR\"",
-      "count": 4,
-      "root_cause": "LLM이 Vue route namespace(/schedule)를 BoardType enum 값으로 혼동. Go 정의는 CALENDAR",
-      "authority": "Go types/board.go: BoardType = NOTICE | REGULATION | CALENDAR",
-      "vue_verification": "Schedule.vue에서 'CALENDAR' 문자열 리터럴 사용 확인"
-    },
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "domain_confusion",
-      "domain": "RequestStatus vs RegistrationStatus",
-      "feature_id": "FR-REQUEST-001",
-      "pattern_found": "display_labels.status: { WAITING: '대기', APPROVED: '완료' }",
-      "replacement": "display_labels.requestStatus: { PENDING: '처리 중', DONE: '완료' }",
-      "count": 1,
-      "root_cause": "LLM이 RegistrationStatus(WAITING/APPROVED)를 RequestStatus(PENDING/DONE)와 혼동. getRequestStatusByID는 비동기 큐 상태(RequestStatus)를 반환",
-      "authority": "Go types/request.go: RequestStatus = PENDING | DONE"
-    },
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "domain_confusion",
-      "domain": "RequestStatus vs RegistrationStatus",
-      "feature_id": "FR-REG-002",
-      "pattern_found": "polling.status_values: [WAITING, APPROVED]",
-      "replacement": "polling.status_values: [PENDING, DONE]",
-      "count": 1,
-      "root_cause": "수강신청 비동기 폴링이 모니터링하는 상태는 RequestStatus(PENDING/DONE)이며, RegistrationStatus(WAITING/APPROVED)와 별개의 타입",
-      "authority": "Go types/request.go: RequestStatus = PENDING | DONE"
-    },
-    {
-      "document": "6_structured_spec.json",
-      "issue_type": "missing_feature",
-      "feature_id": "FR-BOARD-ATTACHMENT-001",
-      "action": "추가",
-      "count": 1,
-      "root_cause": "Phase 6 audit에서 EP-048(POST /api/v1/board/update/attachment)이 FR 매핑 없음을 발견. derive 단계에서 누락된 FR",
-      "authority": "EP-048-R-001 Rule Record 존재하나 derive 단계에서 FR 미생성"
-    }
-  ],
+  "fixes_applied": [],
   "documents_clean": [
     {
-      "document": "vue_output/display_labels.json",
-      "result": "enum 값 불일치 없음",
-      "note": "extract_client.py 정적 추출이므로 코드와 일치. 단, 'RequestStatus' 키명이 실제로는 RegistrationStatus 값(WAITING/APPROVED)을 담고 있는 naming 오류가 있으나 값 자체는 Go 코드와 일치하므로 자동 수정 범위 외"
+      "document": "spec/functional_requirements.json",
+      "result": "불일치 없음",
+      "note": "TermStatus에 PROCEEDING(정확)을 사용. ONGOING 없음. 모든 enum 코드값이 Go 소스와 일치."
+    },
+    {
+      "document": "spec/ui_requirements.md",
+      "result": "불일치 없음",
+      "note": "display_labels.json 정적 추출값과 Go 소스 모두 일치."
     }
   ],
   "remaining_conflicts": [],
-  "known_issues": [
-    {
-      "issue": "display_labels.json의 'RequestStatus' 키명 오류",
-      "description": "extract_client.py가 Vue translator.js의 statusKR 함수를 'RequestStatus'로 라벨링했으나 실제 값은 RegistrationStatus(WAITING/APPROVED). RequestStatus(PENDING/DONE)와 별개의 도메인",
-      "impact": "6_structured_spec.json에서는 이미 올바르게 분리됨. display_labels.json 파일 자체의 키명만 오해를 일으킬 수 있음",
-      "action_required": "extract_client.py의 translator 함수 → 도메인 매핑 로직 수정 권고"
-    }
-  ],
   "ground_truth_sources": [
-    "target_legacy_code/pati-server/types/term.go",
-    "target_legacy_code/pati-server/types/student.go",
-    "target_legacy_code/pati-server/types/registration.go",
-    "target_legacy_code/pati-server/types/lecture.go",
-    "target_legacy_code/pati-server/types/board.go",
-    "target_legacy_code/pati-server/types/attendance.go",
-    "target_legacy_code/pati-server/types/request.go",
-    "target_legacy_code/pati-server/types/user.go"
-  ]
+    "analysis_output/pati-server/types/lecture.go.json",
+    "analysis_output/pati-server/types/attendance.go.json",
+    "analysis_output/pati-server/types/term.go.json",
+    "analysis_output/pati-server/types/student.go.json",
+    "analysis_output/pati-server/types/request.go.json",
+    "analysis_output/pati-server/types/registration.go.json",
+    "analysis_output/pati-server/types/board.go.json"
+  ],
+  "key_note": "이전 세션에서 FR에 ONGOING(존재하지 않는 TermStatus)이 사용된 이력이 있었으나, 이번 전체 재실행에서는 Go 소스 기준으로 PROCEEDING을 정확하게 사용함. reconcile 수정 없이 완료."
 }

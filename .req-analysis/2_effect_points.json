@@ -1,599 +1,67 @@
 {
   "effect_points": [
-    {
-      "ep_id": "EP-001",
-      "effect_id": "EFX-001-01",
-      "kind": "db_write",
-      "target": "AddEvaluation",
-      "query_hint": "r.db.AddEvaluation(&p.Evaluation)",
-      "file": "pati-server/api/evaluation.go.json",
-      "symbol": "addEvaluation"
-    },
-    {
-      "ep_id": "EP-002",
-      "effect_id": "EFX-002-01",
-      "kind": "db_read",
-      "target": "GetEvaluationList",
-      "query_hint": "r.db.GetEvaluationList(*session.User.ID, p.LectureID, types.Pagination(p.pagination))",
-      "file": "pati-server/api/evaluation.go.json",
-      "symbol": "listEvaluation"
-    },
-    {
-      "ep_id": "EP-003",
-      "effect_id": "EFX-003-01",
-      "kind": "db_write",
-      "target": "UpdateRegistrationGrade",
-      "query_hint": "r.db.UpdateRegistrationGrade(&p.Registration, *session.User.ID)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "gradeRegistration"
-    },
-    {
-      "ep_id": "EP-004",
-      "effect_id": "EFX-004-01",
-      "kind": "db_read",
-      "target": "GetTerm",
-      "query_hint": "r.db.GetTerm(p.Status, types.Pagination(p.pagination))",
-      "file": "pati-server/api/term.go.json",
-      "symbol": "listTerm"
-    },
-    {
-      "ep_id": "EP-005",
-      "effect_id": "EFX-005-01",
-      "kind": "db_read",
-      "target": "GetRequestStatusByID",
-      "query_hint": "r.db.GetRequestStatusByID(p.RequestID)",
-      "file": "pati-server/api/request.go.json",
-      "symbol": "getRequestStatusByID"
-    },
-    {
-      "ep_id": "EP-006",
-      "effect_id": "EFX-006-01",
-      "kind": "db_write",
-      "target": "AddCourse",
-      "query_hint": "r.db.AddCourse(&p.Course)",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "addCourse"
-    },
-    {
-      "ep_id": "EP-007",
-      "effect_id": "EFX-007-01",
-      "kind": "db_read",
-      "target": "GetUserByID",
-      "query_hint": "r.db.GetUserByID(p.UserID)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "getUser"
-    },
-    {
-      "ep_id": "EP-008",
-      "effect_id": "EFX-008-01",
-      "kind": "db_read",
-      "target": "GetEvaluation",
-      "query_hint": "r.db.GetEvaluation(*session.User.ID, p.LectureID)",
-      "file": "pati-server/api/evaluation.go.json",
-      "symbol": "getEvaluation"
-    },
-    {
-      "ep_id": "EP-009",
-      "effect_id": "EFX-009-01",
-      "kind": "db_read",
-      "target": "Authenticate",
-      "query_hint": "r.db.Authenticate(p.LoginID, p.LoginPassword)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "login"
-    },
-    {
-      "ep_id": "EP-010",
-      "effect_id": "EFX-010-01",
-      "kind": "db_write",
-      "target": "DisableLecture",
-      "query_hint": "r.db.DisableLecture(p.LectureID)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "disableLecture"
-    },
-    {
-      "ep_id": "EP-011",
-      "effect_id": "EFX-011-01",
-      "kind": "db_write",
-      "target": "AddUser",
-      "query_hint": "r.db.AddUser(&p.User)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "addUser"
-    },
-    {
-      "ep_id": "EP-012",
-      "effect_id": "EFX-012-01",
-      "kind": "db_read",
-      "target": "ListCandidate",
-      "query_hint": "r.db.ListCandidate(types.Pagination(p.pagination))",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "listCandidate"
-    },
-    {
-      "ep_id": "EP-013",
-      "effect_id": "EFX-013-01",
-      "kind": "db_read",
-      "target": "GetLectureByName",
-      "query_hint": "r.db.GetLectureByName(*session.User.ID, p.Name, p.UserName, p.Description, (*types.Term)(p.Term), p.",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "listLecture"
-    },
-    {
-      "ep_id": "EP-014",
-      "effect_id": "EFX-014-01",
-      "kind": "db_write",
-      "target": "ApproveRegistrationBatch",
-      "query_hint": "r.db.ApproveRegistrationBatch((*types.Term)(&p.Term))",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "approveRegistrationBatch"
-    },
-    {
-      "ep_id": "EP-015",
-      "effect_id": "EFX-015-01",
-      "kind": "db_read",
-      "target": "GetLectureStats",
-      "query_hint": "r.db.GetLectureStats(types.Term(p.Term))",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "exportLecture"
-    },
-    {
-      "ep_id": "EP-016",
-      "effect_id": "EFX-016-01",
-      "kind": "db_read",
-      "target": "GetCourseByName",
-      "query_hint": "r.db.GetCourseByName(p.Name, types.Pagination(p.pagination))",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "listCourse"
-    },
-    {
-      "ep_id": "EP-017",
-      "effect_id": "EFX-017-01",
-      "kind": "db_write",
-      "target": "UpdateLectureReview",
-      "query_hint": "r.db.UpdateLectureReview(&p.Lecture)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "reviewLecture"
-    },
-    {
-      "ep_id": "EP-018",
-      "effect_id": "EFX-018-01",
-      "kind": "db_write",
-      "target": "UpdateLectureGraded",
-      "query_hint": "r.db.UpdateLectureGraded(&p.Lecture)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "updateLectureGraded"
-    },
-    {
-      "ep_id": "EP-019",
-      "effect_id": "EFX-019-01",
-      "kind": "db_write",
-      "target": "UpdateCourse",
-      "query_hint": "r.db.UpdateCourse(&p.Course)",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "updateCourse"
-    },
-    {
-      "ep_id": "EP-020",
-      "effect_id": "EFX-020-01",
-      "kind": "db_read",
-      "target": "GetRegistrationByUserID",
-      "query_hint": "r.db.GetRegistrationByUserID(p.UserID, term, status, pagination)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "listRegistration"
-    },
-    {
-      "ep_id": "EP-020",
-      "effect_id": "EFX-020-02",
-      "kind": "db_read",
-      "target": "GetRegistrationByLectureID",
-      "query_hint": "r.db.GetRegistrationByLectureID(userID, lectureID, status, pagination)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "listRegistration"
-    },
-    {
-      "ep_id": "EP-021",
-      "effect_id": "EFX-021-01",
-      "kind": "db_write",
-      "target": "AddRegistration",
-      "query_hint": "r.db.AddRegistration(&p.Registration, p.Forced)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "addRegistration"
-    },
-    {
-      "ep_id": "EP-022",
-      "effect_id": "EFX-022-01",
-      "kind": "db_write",
-      "target": "UpdateBoard",
-      "query_hint": "r.db.UpdateBoard(&p.Board)",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "updateBoard"
-    },
-    {
-      "ep_id": "EP-023",
-      "effect_id": "EFX-023-01",
-      "kind": "external_api_read",
-      "target": "r.drive.List(ctx, directoryID)",
-      "query_hint": "r.drive.List(ctx, directoryID)",
-      "file": "pati-server/api/drive.go.json",
-      "symbol": "listDrive"
-    },
-    {
-      "ep_id": "EP-023",
-      "effect_id": "EFX-023-02",
-      "kind": "external_api",
-      "target": "Google Drive API",
-      "query_hint": "Google Drive API",
-      "file": "pati-server/api/drive.go.json",
-      "symbol": "listDrive"
-    },
-    {
-      "ep_id": "EP-024",
-      "effect_id": "EFX-024-01",
-      "kind": "db_write",
-      "target": "UpdateUser",
-      "query_hint": "r.db.UpdateUser(&p.User)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "updateUser"
-    },
-    {
-      "ep_id": "EP-025",
-      "effect_id": "EFX-025-01",
-      "kind": "db_read",
-      "target": "GetRegistrationStats",
-      "query_hint": "r.db.GetRegistrationStats(types.Term(p.Term))",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "exportRegistration"
-    },
-    {
-      "ep_id": "EP-026",
-      "effect_id": "EFX-026-01",
-      "kind": "db_read",
-      "target": "GetGraduatedTerm",
-      "query_hint": "r.db.GetGraduatedTerm()",
-      "file": "pati-server/api/term.go.json",
-      "symbol": "listGraduatedTerm"
-    },
-    {
-      "ep_id": "EP-027",
-      "effect_id": "EFX-027-01",
-      "kind": "db_read",
-      "target": "GetRegistrationReport",
-      "query_hint": "r.db.GetRegistrationReport(p.UserID)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "reportRegistration"
-    },
-    {
-      "ep_id": "EP-028",
-      "effect_id": "EFX-028-01",
-      "kind": "db_write",
-      "target": "UpdateEvaluation",
-      "query_hint": "r.db.UpdateEvaluation(&p.Evaluation)",
-      "file": "pati-server/api/evaluation.go.json",
-      "symbol": "updateEvaluation"
-    },
-    {
-      "ep_id": "EP-029",
-      "effect_id": "EFX-029-01",
-      "kind": "db_read",
-      "target": "GetBoardByID",
-      "query_hint": "r.db.GetBoardByID(p.BoardID)",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "getBoard"
-    },
-    {
-      "ep_id": "EP-030",
-      "effect_id": "EFX-030-01",
-      "kind": "db_write",
-      "target": "ResetUserPassword",
-      "query_hint": "r.db.ResetUserPassword(p.UserID)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "resetUserPassword"
-    },
-    {
-      "ep_id": "EP-031",
-      "effect_id": "EFX-031-01",
-      "kind": "db_read",
-      "target": "GetBoardByType",
-      "query_hint": "r.db.GetBoardByType(p.Type, false, types.Pagination(p.pagination))",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "listBoard"
-    },
-    {
-      "ep_id": "EP-032",
-      "effect_id": "EFX-032-01",
-      "kind": "db_write",
-      "target": "UpdateLecture",
-      "query_hint": "r.db.UpdateLecture(&p.Lecture)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "updateLecture"
-    },
-    {
-      "ep_id": "EP-033",
-      "effect_id": "EFX-033-01",
-      "kind": "session_op",
-      "target": "logout",
-      "query_hint": "['decode', 'err.Error', 'spew.Sdump', 'logger.Debugf', 'w.Write', 'r.session.Rem",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "logout"
-    },
-    {
-      "ep_id": "EP-034",
-      "effect_id": "EFX-034-01",
-      "kind": "db_write",
-      "target": "UpdateTerm",
-      "query_hint": "r.db.UpdateTerm(&p.Term)",
-      "file": "pati-server/api/term.go.json",
-      "symbol": "updateTerm"
-    },
-    {
-      "ep_id": "EP-035",
-      "effect_id": "EFX-035-01",
-      "kind": "db_write",
-      "target": "RemoveLecture",
-      "query_hint": "r.db.RemoveLecture(p.LectureID)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "removeLecture"
-    },
-    {
-      "ep_id": "EP-036",
-      "effect_id": "EFX-036-01",
-      "kind": "db_read",
-      "target": "GetCertificateByUserID",
-      "query_hint": "r.db.GetCertificateByUserID(*session.User.ID)",
-      "file": "pati-server/api/certificate.go.json",
-      "symbol": "getCertificateByUserID"
-    },
-    {
-      "ep_id": "EP-037",
-      "effect_id": "EFX-037-01",
-      "kind": "db_write",
-      "target": "SetAttendance",
-      "query_hint": "r.db.SetAttendance(*session.User.ID, p.LectureID, p.Round, p.Attendance)",
-      "file": "pati-server/api/attendance.go.json",
-      "symbol": "setAttendance"
-    },
-    {
-      "ep_id": "EP-038",
-      "effect_id": "EFX-038-01",
-      "kind": "db_write",
-      "target": "UpdateRegistration",
-      "query_hint": "r.db.UpdateRegistration(&p.Registration)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "updateRegistration"
-    },
-    {
-      "ep_id": "EP-039",
-      "effect_id": "EFX-039-01",
-      "kind": "db_read",
-      "target": "GetCertificateList",
-      "query_hint": "r.db.GetCertificateList(types.Pagination(p.pagination))",
-      "file": "pati-server/api/certificate.go.json",
-      "symbol": "listCertificate"
-    },
-    {
-      "ep_id": "EP-040",
-      "effect_id": "EFX-040-01",
-      "kind": "db_read",
-      "target": "GetCourseByID",
-      "query_hint": "r.db.GetCourseByID(p.CourseID)",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "getCourse"
-    },
-    {
-      "ep_id": "EP-041",
-      "effect_id": "EFX-041-01",
-      "kind": "db_write",
-      "target": "UpdateUserPicture",
-      "query_hint": "r.db.UpdateUserPicture(&p.User)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "updateUserPicture"
-    },
-    {
-      "ep_id": "EP-042",
-      "effect_id": "EFX-042-01",
-      "kind": "db_write",
-      "target": "GetUserByPermission",
-      "query_hint": "r.db.GetUserByPermission(types.Permission(p.Type), p.Name, p.Grade, p.Year, types.Pagination(p.pagin",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "listUser"
-    },
-    {
-      "ep_id": "EP-043",
-      "effect_id": "EFX-043-01",
-      "kind": "db_read",
-      "target": "GetCourse",
-      "query_hint": "r.db.GetCourse()",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "exportCourse"
-    },
-    {
-      "ep_id": "EP-044",
-      "effect_id": "EFX-044-01",
-      "kind": "db_write",
-      "target": "RemoveCourse",
-      "query_hint": "r.db.RemoveCourse(p.CourseID)",
-      "file": "pati-server/api/course.go.json",
-      "symbol": "removeCourse"
-    },
-    {
-      "ep_id": "EP-045",
-      "effect_id": "EFX-045-01",
-      "kind": "db_read",
-      "target": "GetLectureByID",
-      "query_hint": "r.db.GetLectureByID(lectureID)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "addSpringRegistration"
-    },
-    {
-      "ep_id": "EP-045",
-      "effect_id": "EFX-045-02",
-      "kind": "async_publish",
-      "target": "r.registration.StoreRequest(registrationReq)",
-      "query_hint": "r.registration.StoreRequest(registrationReq)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "addSpringRegistration"
-    },
-    {
-      "ep_id": "EP-045",
-      "effect_id": "EFX-045-03",
-      "kind": "async_queue",
-      "target": "StoreRequest (async registration)",
-      "query_hint": "StoreRequest (async registration)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "addSpringRegistration"
-    },
-    {
-      "ep_id": "EP-046",
-      "effect_id": "EFX-046-01",
-      "kind": "db_read",
-      "target": "GetAttendanceStats",
-      "query_hint": "r.db.GetAttendanceStats(*session.User.ID, p.LectureID)",
-      "file": "pati-server/api/attendance.go.json",
-      "symbol": "exportAttendance"
-    },
-    {
-      "ep_id": "EP-046",
-      "effect_id": "EFX-046-02",
-      "kind": "db_read",
-      "target": "GetLectureByID",
-      "query_hint": "r.db.GetLectureByID(p.LectureID)",
-      "file": "pati-server/api/attendance.go.json",
-      "symbol": "exportAttendance"
-    },
-    {
-      "ep_id": "EP-047",
-      "effect_id": "EFX-047-01",
-      "kind": "db_write",
-      "target": "AddLecture",
-      "query_hint": "r.db.AddLecture(&p.Lecture)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "addLecture"
-    },
-    {
-      "ep_id": "EP-048",
-      "effect_id": "EFX-048-01",
-      "kind": "db_write",
-      "target": "UpdateBoardAttachment",
-      "query_hint": "r.db.UpdateBoardAttachment(&p.Board)",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "updateBoardAttachment"
-    },
-    {
-      "ep_id": "EP-049",
-      "effect_id": "EFX-049-01",
-      "kind": "external_api_read",
-      "target": "r.drive.Download(ctx, driveID)",
-      "query_hint": "r.drive.Download(ctx, driveID)",
-      "file": "pati-server/api/drive.go.json",
-      "symbol": "downloadDrive"
-    },
-    {
-      "ep_id": "EP-049",
-      "effect_id": "EFX-049-02",
-      "kind": "file_stream",
-      "target": "Drive file download",
-      "query_hint": "Drive file download",
-      "file": "pati-server/api/drive.go.json",
-      "symbol": "downloadDrive"
-    },
-    {
-      "ep_id": "EP-050",
-      "effect_id": "EFX-050-01",
-      "kind": "db_read",
-      "target": "GetLectureByID",
-      "query_hint": "r.db.GetLectureByID(p.LectureID)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "getLecture"
-    },
-    {
-      "ep_id": "EP-051",
-      "effect_id": "EFX-051-01",
-      "kind": "db_read",
-      "target": "GetCertificateByID",
-      "query_hint": "r.db.GetCertificateByID(p.CertificateID)",
-      "file": "pati-server/api/certificate.go.json",
-      "symbol": "getCertificateByID"
-    },
-    {
-      "ep_id": "EP-052",
-      "effect_id": "EFX-052-01",
-      "kind": "db_write",
-      "target": "RemoveRegistration",
-      "query_hint": "r.db.RemoveRegistration(p.RegistrationID, *session.User.ID)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "removeRegistration"
-    },
-    {
-      "ep_id": "EP-053",
-      "effect_id": "EFX-053-01",
-      "kind": "db_write",
-      "target": "AddBoard",
-      "query_hint": "r.db.AddBoard(&p.Board)",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "addBoard"
-    },
-    {
-      "ep_id": "EP-054",
-      "effect_id": "EFX-054-01",
-      "kind": "db_read",
-      "target": "GetUser",
-      "query_hint": "r.db.GetUser()",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "exportUser"
-    },
-    {
-      "ep_id": "EP-055",
-      "effect_id": "EFX-055-01",
-      "kind": "db_write",
-      "target": "RemoveBoard",
-      "query_hint": "r.db.RemoveBoard(p.BoardID)",
-      "file": "pati-server/api/board.go.json",
-      "symbol": "removeBoard"
-    },
-    {
-      "ep_id": "EP-056",
-      "effect_id": "EFX-056-01",
-      "kind": "db_write",
-      "target": "AddRegistrationBatch",
-      "query_hint": "r.db.AddRegistrationBatch(p.UserIDList, p.LectureID, p.Forced)",
-      "file": "pati-server/api/registration.go.json",
-      "symbol": "addRegistrationBatch"
-    },
-    {
-      "ep_id": "EP-057",
-      "effect_id": "EFX-057-01",
-      "kind": "db_write",
-      "target": "UpdateLectureAttachment",
-      "query_hint": "r.db.UpdateLectureAttachment(&p.Lecture)",
-      "file": "pati-server/api/lecture.go.json",
-      "symbol": "updateLectureAttachment"
-    },
-    {
-      "ep_id": "EP-058",
-      "effect_id": "EFX-058-01",
-      "kind": "db_write",
-      "target": "AddCertificateList",
-      "query_hint": "r.db.AddCertificateList(certificateList)",
-      "file": "pati-server/api/certificate.go.json",
-      "symbol": "issueCertificate"
-    },
-    {
-      "ep_id": "EP-059",
-      "effect_id": "EFX-059-01",
-      "kind": "db_write",
-      "target": "UpdateUserPassword",
-      "query_hint": "r.db.UpdateUserPassword(p.UserID, p.OldPassword, p.NewPassword)",
-      "file": "pati-server/api/user.go.json",
-      "symbol": "updateUserPassword"
-    },
-    {
-      "ep_id": "EP-060",
-      "effect_id": "EFX-060-01",
-      "kind": "db_read",
-      "target": "GetAttendance",
-      "query_hint": "r.db.GetAttendance(*session.User.ID, p.LectureID, p.Round)",
-      "file": "pati-server/api/attendance.go.json",
-      "symbol": "listAttendance"
-    }
-  ],
-  "total": 66
+    { "ep_id": "EP-001", "effect_id": "EFX-001-01", "kind": "db_write", "target": "session created (in-memory)", "query_hint": "r.db.Authenticate(loginID, loginPassword)", "file": "api/user.go", "symbol": "login" },
+    { "ep_id": "EP-001", "effect_id": "EFX-001-02", "kind": "db_read", "target": "user credentials verified", "query_hint": "r.db.Authenticate(loginID, loginPassword)", "file": "api/user.go", "symbol": "login" },
+    { "ep_id": "EP-002", "effect_id": "EFX-002-01", "kind": "state_change", "target": "session removed (in-memory)", "query_hint": "r.session.Remove(id)", "file": "api/user.go", "symbol": "logout" },
+    { "ep_id": "EP-003", "effect_id": "EFX-003-01", "kind": "db_read", "target": "user by ID", "query_hint": "r.db.GetUserByID(p.UserID)", "file": "api/user.go", "symbol": "getUser" },
+    { "ep_id": "EP-004", "effect_id": "EFX-004-01", "kind": "db_read", "target": "users by permission/name/grade/year", "query_hint": "r.db.GetUserByPermission(type, name, grade, year, pagination)", "file": "api/user.go", "symbol": "listUser" },
+    { "ep_id": "EP-005", "effect_id": "EFX-005-01", "kind": "db_read", "target": "graduation candidate users", "query_hint": "r.db.ListCandidate(pagination)", "file": "api/user.go", "symbol": "listCandidate" },
+    { "ep_id": "EP-006", "effect_id": "EFX-006-01", "kind": "db_write", "target": "users.insert", "query_hint": "r.db.AddUser(&p.User)", "file": "api/user.go", "symbol": "addUser" },
+    { "ep_id": "EP-007", "effect_id": "EFX-007-01", "kind": "db_write", "target": "users.update", "query_hint": "r.db.UpdateUser(&p.User)", "file": "api/user.go", "symbol": "updateUser" },
+    { "ep_id": "EP-008", "effect_id": "EFX-008-01", "kind": "db_write", "target": "users.password updated", "query_hint": "r.db.UpdateUserPassword(userID, oldPassword, newPassword)", "file": "api/user.go", "symbol": "updateUserPassword" },
+    { "ep_id": "EP-009", "effect_id": "EFX-009-01", "kind": "db_write", "target": "users.picture updated", "query_hint": "r.db.UpdateUserPicture(&p.User)", "file": "api/user.go", "symbol": "updateUserPicture" },
+    { "ep_id": "EP-010", "effect_id": "EFX-010-01", "kind": "db_write", "target": "users.password reset to default", "query_hint": "r.db.ResetUserPassword(userID)", "file": "api/user.go", "symbol": "resetUserPassword" },
+    { "ep_id": "EP-011", "effect_id": "EFX-011-01", "kind": "db_read", "target": "all users for export", "query_hint": "r.db.GetUser()", "file": "api/user.go", "symbol": "exportUser" },
+    { "ep_id": "EP-012", "effect_id": "EFX-012-01", "kind": "db_read", "target": "terms by status", "query_hint": "r.db.GetTerm(status, pagination)", "file": "api/term.go", "symbol": "listTerm" },
+    { "ep_id": "EP-013", "effect_id": "EFX-013-01", "kind": "db_write", "target": "terms.status updated", "query_hint": "r.db.UpdateTerm(&p.Term)", "file": "api/term.go", "symbol": "updateTerm" },
+    { "ep_id": "EP-014", "effect_id": "EFX-014-01", "kind": "db_read", "target": "graduated terms", "query_hint": "r.db.GetGraduatedTerm()", "file": "api/term.go", "symbol": "listGraduatedTerm" },
+    { "ep_id": "EP-015", "effect_id": "EFX-015-01", "kind": "db_read", "target": "course by ID", "query_hint": "r.db.GetCourseByID(courseID)", "file": "api/course.go", "symbol": "getCourse" },
+    { "ep_id": "EP-016", "effect_id": "EFX-016-01", "kind": "db_read", "target": "courses by name", "query_hint": "r.db.GetCourseByName(name, pagination)", "file": "api/course.go", "symbol": "listCourse" },
+    { "ep_id": "EP-017", "effect_id": "EFX-017-01", "kind": "db_write", "target": "courses.insert", "query_hint": "r.db.AddCourse(&p.Course)", "file": "api/course.go", "symbol": "addCourse" },
+    { "ep_id": "EP-018", "effect_id": "EFX-018-01", "kind": "db_write", "target": "courses.update", "query_hint": "r.db.UpdateCourse(&p.Course)", "file": "api/course.go", "symbol": "updateCourse" },
+    { "ep_id": "EP-019", "effect_id": "EFX-019-01", "kind": "db_write", "target": "courses.delete", "query_hint": "r.db.RemoveCourse(courseID)", "file": "api/course.go", "symbol": "removeCourse" },
+    { "ep_id": "EP-020", "effect_id": "EFX-020-01", "kind": "db_read", "target": "all courses for export", "query_hint": "r.db.GetCourse()", "file": "api/course.go", "symbol": "exportCourse" },
+    { "ep_id": "EP-021", "effect_id": "EFX-021-01", "kind": "db_read", "target": "lecture by ID", "query_hint": "r.db.GetLectureByID(lectureID)", "file": "api/lecture.go", "symbol": "getLecture" },
+    { "ep_id": "EP-022", "effect_id": "EFX-022-01", "kind": "db_read", "target": "lectures by name/description/term/userID", "query_hint": "r.db.GetLectureByName(userID, name, userName, description, term, userID, false, pagination)", "file": "api/lecture.go", "symbol": "listLecture" },
+    { "ep_id": "EP-023", "effect_id": "EFX-023-01", "kind": "db_write", "target": "lectures.insert", "query_hint": "r.db.AddLecture(&p.Lecture)", "file": "api/lecture.go", "symbol": "addLecture" },
+    { "ep_id": "EP-024", "effect_id": "EFX-024-01", "kind": "db_write", "target": "lectures.update (info)", "query_hint": "r.db.UpdateLecture(&p.Lecture)", "file": "api/lecture.go", "symbol": "updateLecture" },
+    { "ep_id": "EP-025", "effect_id": "EFX-025-01", "kind": "db_write", "target": "lectures.review updated", "query_hint": "r.db.UpdateLectureReview(&p.Lecture)", "file": "api/lecture.go", "symbol": "reviewLecture" },
+    { "ep_id": "EP-026", "effect_id": "EFX-026-01", "kind": "db_write", "target": "lectures.attachment updated", "query_hint": "r.db.UpdateLectureAttachment(&p.Lecture)", "file": "api/lecture.go", "symbol": "updateLectureAttachment" },
+    { "ep_id": "EP-027", "effect_id": "EFX-027-01", "kind": "db_write", "target": "lectures.graded flag updated", "query_hint": "r.db.UpdateLectureGraded(&p.Lecture)", "file": "api/lecture.go", "symbol": "updateLectureGraded" },
+    { "ep_id": "EP-028", "effect_id": "EFX-028-01", "kind": "db_write", "target": "lectures.disabled := true", "query_hint": "r.db.DisableLecture(lectureID)", "file": "api/lecture.go", "symbol": "disableLecture" },
+    { "ep_id": "EP-029", "effect_id": "EFX-029-01", "kind": "db_write", "target": "lectures.delete", "query_hint": "r.db.RemoveLecture(lectureID)", "file": "api/lecture.go", "symbol": "removeLecture" },
+    { "ep_id": "EP-030", "effect_id": "EFX-030-01", "kind": "db_read", "target": "lecture stats by term", "query_hint": "r.db.GetLectureStats(term)", "file": "api/lecture.go", "symbol": "exportLecture" },
+    { "ep_id": "EP-031", "effect_id": "EFX-031-01", "kind": "db_read", "target": "registrations by userID or lectureID", "query_hint": "r.db.GetRegistrationByUserID / GetRegistrationByLectureID", "file": "api/registration.go", "symbol": "listRegistration" },
+    { "ep_id": "EP-032", "effect_id": "EFX-032-01", "kind": "db_write", "target": "registrations.insert", "query_hint": "r.db.AddRegistration(&p.Registration, forced)", "file": "api/registration.go", "symbol": "addRegistration" },
+    { "ep_id": "EP-033", "effect_id": "EFX-033-01", "kind": "db_read", "target": "lecture existence check", "query_hint": "r.db.GetLectureByID(*p.Registration.Lecture.ID)", "file": "api/registration.go", "symbol": "addSpringRegistration" },
+    { "ep_id": "EP-033", "effect_id": "EFX-033-02", "kind": "state_change", "target": "registration request stored asynchronously", "query_hint": "r.registration.StoreRequest(request)", "file": "api/registration.go", "symbol": "addSpringRegistration" },
+    { "ep_id": "EP-034", "effect_id": "EFX-034-01", "kind": "db_write", "target": "registrations.insert (batch)", "query_hint": "r.db.AddRegistrationBatch(userIDList, lectureID, forced)", "file": "api/registration.go", "symbol": "addRegistrationBatch" },
+    { "ep_id": "EP-035", "effect_id": "EFX-035-01", "kind": "db_write", "target": "registrations.status := APPROVED (batch)", "query_hint": "r.db.ApproveRegistrationBatch(term)", "file": "api/registration.go", "symbol": "approveRegistrationBatch" },
+    { "ep_id": "EP-036", "effect_id": "EFX-036-01", "kind": "db_write", "target": "registrations.update", "query_hint": "r.db.UpdateRegistration(&p.Registration)", "file": "api/registration.go", "symbol": "updateRegistration" },
+    { "ep_id": "EP-037", "effect_id": "EFX-037-01", "kind": "db_write", "target": "registrations.grade/passed/comment updated", "query_hint": "r.db.UpdateRegistrationGrade(&p.Registration, userID)", "file": "api/registration.go", "symbol": "gradeRegistration" },
+    { "ep_id": "EP-038", "effect_id": "EFX-038-01", "kind": "db_write", "target": "registrations.delete", "query_hint": "r.db.RemoveRegistration(registrationID, userID)", "file": "api/registration.go", "symbol": "removeRegistration" },
+    { "ep_id": "EP-039", "effect_id": "EFX-039-01", "kind": "db_read", "target": "registration stats by term", "query_hint": "r.db.GetRegistrationStats(term)", "file": "api/registration.go", "symbol": "exportRegistration" },
+    { "ep_id": "EP-040", "effect_id": "EFX-040-01", "kind": "db_read", "target": "registration report by userID", "query_hint": "r.db.GetRegistrationReport(userID)", "file": "api/registration.go", "symbol": "reportRegistration" },
+    { "ep_id": "EP-041", "effect_id": "EFX-041-01", "kind": "db_read", "target": "board post by ID", "query_hint": "r.db.GetBoardByID(boardID)", "file": "api/board.go", "symbol": "getBoard" },
+    { "ep_id": "EP-042", "effect_id": "EFX-042-01", "kind": "db_read", "target": "board posts by type", "query_hint": "r.db.GetBoardByType(type, false, pagination)", "file": "api/board.go", "symbol": "listBoard" },
+    { "ep_id": "EP-043", "effect_id": "EFX-043-01", "kind": "db_write", "target": "board.insert", "query_hint": "r.db.AddBoard(&p.Board)", "file": "api/board.go", "symbol": "addBoard" },
+    { "ep_id": "EP-044", "effect_id": "EFX-044-01", "kind": "db_write", "target": "board.update (title/body)", "query_hint": "r.db.UpdateBoard(&p.Board)", "file": "api/board.go", "symbol": "updateBoard" },
+    { "ep_id": "EP-045", "effect_id": "EFX-045-01", "kind": "db_write", "target": "board.attachment updated", "query_hint": "r.db.UpdateBoardAttachment(&p.Board)", "file": "api/board.go", "symbol": "updateBoardAttachment" },
+    { "ep_id": "EP-046", "effect_id": "EFX-046-01", "kind": "db_write", "target": "board.delete", "query_hint": "r.db.RemoveBoard(boardID)", "file": "api/board.go", "symbol": "removeBoard" },
+    { "ep_id": "EP-047", "effect_id": "EFX-047-01", "kind": "db_read", "target": "attendance by lectureID and round", "query_hint": "r.db.GetAttendance(userID, lectureID, round)", "file": "api/attendance.go", "symbol": "listAttendance" },
+    { "ep_id": "EP-048", "effect_id": "EFX-048-01", "kind": "db_write", "target": "attendance records set", "query_hint": "r.db.SetAttendance(userID, lectureID, round, attendance)", "file": "api/attendance.go", "symbol": "setAttendance" },
+    { "ep_id": "EP-049", "effect_id": "EFX-049-01", "kind": "db_read", "target": "attendance stats by lectureID", "query_hint": "r.db.GetAttendanceStats(userID, lectureID)", "file": "api/attendance.go", "symbol": "exportAttendance" },
+    { "ep_id": "EP-049", "effect_id": "EFX-049-02", "kind": "db_read", "target": "lecture info for export header", "query_hint": "r.db.GetLectureByID(lectureID)", "file": "api/attendance.go", "symbol": "exportAttendance" },
+    { "ep_id": "EP-050", "effect_id": "EFX-050-01", "kind": "db_read", "target": "evaluation by userID+lectureID", "query_hint": "r.db.GetEvaluation(userID, lectureID)", "file": "api/evaluation.go", "symbol": "getEvaluation" },
+    { "ep_id": "EP-051", "effect_id": "EFX-051-01", "kind": "db_read", "target": "evaluations by lectureID", "query_hint": "r.db.GetEvaluationList(userID, lectureID, pagination)", "file": "api/evaluation.go", "symbol": "listEvaluation" },
+    { "ep_id": "EP-052", "effect_id": "EFX-052-01", "kind": "db_write", "target": "evaluations.insert", "query_hint": "r.db.AddEvaluation(&p.Evaluation)", "file": "api/evaluation.go", "symbol": "addEvaluation" },
+    { "ep_id": "EP-053", "effect_id": "EFX-053-01", "kind": "db_write", "target": "evaluations.update", "query_hint": "r.db.UpdateEvaluation(&p.Evaluation)", "file": "api/evaluation.go", "symbol": "updateEvaluation" },
+    { "ep_id": "EP-054", "effect_id": "EFX-054-01", "kind": "db_read", "target": "certificate by ID + draw image", "query_hint": "r.db.GetCertificateByID(certificateID)", "file": "api/certificate.go", "symbol": "getCertificateByID" },
+    { "ep_id": "EP-055", "effect_id": "EFX-055-01", "kind": "db_read", "target": "certificate by userID + draw image", "query_hint": "r.db.GetCertificateByUserID(userID)", "file": "api/certificate.go", "symbol": "getCertificateByUserID" },
+    { "ep_id": "EP-056", "effect_id": "EFX-056-01", "kind": "db_read", "target": "certificate list", "query_hint": "r.db.GetCertificateList(pagination)", "file": "api/certificate.go", "symbol": "listCertificate" },
+    { "ep_id": "EP-057", "effect_id": "EFX-057-01", "kind": "db_write", "target": "certificates.insert (batch)", "query_hint": "r.db.AddCertificateList(certificateList)", "file": "api/certificate.go", "symbol": "issueCertificate" },
+    { "ep_id": "EP-058", "effect_id": "EFX-058-01", "kind": "db_read", "target": "drive files/folders list", "query_hint": "r.drive.List(...)", "file": "api/drive.go", "symbol": "listDrive" },
+    { "ep_id": "EP-059", "effect_id": "EFX-059-01", "kind": "db_read", "target": "drive file download stream", "query_hint": "r.drive.Download(...)", "file": "api/drive.go", "symbol": "downloadDrive" },
+    { "ep_id": "EP-060", "effect_id": "EFX-060-01", "kind": "db_read", "target": "async request status by ID", "query_hint": "r.db.GetRequestStatusByID(requestID)", "file": "api/request.go", "symbol": "getRequestStatusByID" }
+  ]
 }
