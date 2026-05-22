@@ -20,10 +20,14 @@ description: |
 
 ### Step 1 — Go AST 추출
 
-`main.py`를 실행한다.
+통합 스크립트 또는 개별 스크립트를 실행한다.
 
 ```bash
-python main.py
+# 통합 스크립트 (권장)
+python extract.py --backend
+
+# 또는 개별 스크립트
+python scripts/extract_backend.py
 ```
 
 `target_legacy_code/` 아래의 모든 `.go` 파일을 tree-sitter-go로 파싱해
@@ -60,10 +64,14 @@ python main.py
 
 ### Step 2 — 클라이언트 정적 분석
 
-`extract_client.py`를 실행한다.
+통합 스크립트 또는 개별 스크립트를 실행한다.
 
 ```bash
-python extract_client.py
+# 통합 스크립트 (권장)
+python extract.py --client
+
+# 또는 개별 스크립트
+python scripts/extract_client.py
 ```
 
 `target_legacy_code/pati-client/` 아래의 소스를 정적 분석해 `vue_output/` 폴더에 5개 파일을 생성한다.
@@ -207,13 +215,17 @@ python extract_client.py
 
 ### Step 3 — Call Graph 생성
 
-`build_graph.py`를 실행하되, **내부 함수 필터링을 적용**한다.
+통합 스크립트 또는 개별 스크립트를 실행하되, **내부 함수 필터링을 적용**한다.
 
 ```bash
-python build_graph.py
+# 통합 스크립트 (권장)
+python extract.py --graph
+
+# 또는 개별 스크립트
+python scripts/extract_call_graph.py
 ```
 
-build_graph.py는 다음을 반드시 수행해야 한다:
+Call Graph 생성 스크립트는 다음을 반드시 수행해야 한다:
 - `registry`(함수명 → 파일 경로 맵)를 먼저 빌드한다
 - `calls` 목록에서 `registry`에 없는 항목(stdlib, vendor 패키지)을 제거한다
 - 내부 함수 간 호출만 남긴 `global_call_graph.json`을 생성한다
@@ -244,6 +256,12 @@ build_graph.py는 다음을 반드시 수행해야 한다:
 
 - `analysis_output/` 폴더에 JSON 파일이 생성됐는가
 - `global_call_graph.json`이 생성됐는가, `internal_calls_only: true` 확인
+
+**빠른 실행 (전체):**
+```bash
+python extract.py  # 백엔드 + 클라이언트 + Call Graph 한 번에
+```
+
 - `vue_output/` 폴더 (pati-client 폴더가 있는 경우):
   - `api_map.json` — client.js 메서드 매핑 수
   - `routes.json` — 라우트 + 권한 분기

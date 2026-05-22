@@ -12,7 +12,7 @@ description: |
 요구사항 도출 파이프라인의 **Phase 4**이다.
 같은 도메인 엔티티를 다루는 여러 EP(생성/조회/수정/삭제)를 가로질러 각 필드의 동작을 종합한다.
 
-입력: `.req-analysis/4_domain_groups.json`, `.req-analysis/3_rule_records.json`, `client_output/ui_structure.json`
+입력: `.req-analysis/4_domain_groups.json`, `.req-analysis/3_rule_records.json`, `vue_output/ui_structure.json`
 출력: `.req-analysis/5_field_spec.json`
 
 ---
@@ -73,7 +73,7 @@ created_at   | absent    | absent    | present
 
 ## Step 3 — UI 정보 교차 참조
 
-`client_output/ui_structure.json`에서 해당 도메인의 편집 폼(edit form) 컴포넌트를 찾는다.
+`vue_output/ui_structure.json`에서 해당 도메인의 편집 폼(edit form) 컴포넌트를 찾는다.
 
 **편집 폼 식별 기준**: 컴포넌트 파일명 또는 라우트 경로에 `edit`, `update`, `modify`, `수정` 등이 포함되거나, 라우트 경로에 파라미터(`:id` 등)가 있는 폼 컴포넌트.
 
