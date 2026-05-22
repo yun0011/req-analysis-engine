@@ -287,75 +287,94 @@ if enrollment.Status != REQUESTED {
 
 ---
 
-## Step 4 — 클라이언트 컴포넌트 슬라이싱
+## Step 4 — 클라이언트 진입점 슬라이싱
 
-**이 단계가 필요한 이유**
+**왜 독립된 단계인가**
 
-백엔드 EP 분석만으로는 포착할 수 없는 요구사항이 있다.
-대표적인 경우: 백엔드가 전체 목록을 반환하고, **클라이언트가 필터링·정렬·조건부 표시를 로컬에서 처리**하는 패턴.
+백엔드는 HTTP 엔드포인트가 진입점이다. 클라이언트는 **라우트(페이지) × 사용자 행동**이 진입점이다.
+두 진입점 체계는 겹치는 부분도 있고 겹치지 않는 부분도 있다.
 
-이 경우 백엔드 Rule Record에는 "목록을 반환한다"만 기록된다. "졸업학기·배움과정·이름으로 필터링할 수 있다"는 요구사항은 백엔드 슬라이스에 나타나지 않는다.
-
-**이 단계에서 하는 일**
-
-클라이언트 컴포넌트 파일을 직접 읽어 다음을 추출한다:
-- 백엔드 응답 데이터를 클라이언트에서 필터링·정렬하는 computed/watch 로직
-- 백엔드 EP 없이 클라이언트만으로 동작하는 조건부 UI 분기 (상태 표시 조건, 버튼 활성화 조건 등)
-- 백엔드에서 받은 데이터를 재료로 사용자가 의미 있는 행동을 트리거하는 클라이언트 로직 (파일 다운로드, 외부 URL 오픈 등)
-
-**대상 컴포넌트 선정 기준**
-
-`vue_output/component_map.json` (또는 동등한 클라이언트 분석 결과)에서 다음 조건을 모두 만족하는 컴포넌트를 선정한다:
-1. 백엔드 API를 하나 이상 호출한다 (`api_calls` 비어있지 않음)
-2. 페이지 단위 컴포넌트다 (라우트 경로가 있음)
+- 백엔드 EP가 있는 행동 → 백엔드 Rule Record에 이미 잡힌다. 여기서는 `related_backend_ep`로 연결만 한다.
+- 백엔드 EP가 없는 행동 → 여기서만 잡힌다. CL Rule Record로 뽑는다.
+- 백엔드에서만 도는 작업 (크론, 배치) → Step 1에서 잡힌다. 여기서는 다루지 않는다.
 
 클라이언트 분석 결과가 없으면 이 단계를 건너뛴다.
 
-**컴포넌트 읽기 및 CL Rule Record 추출**
+---
 
-선정된 컴포넌트 파일을 직접 읽는다 (정규식 패턴 매칭 없이 LLM이 코드를 읽어 판단한다).
+### Step 4-a — 클라이언트 진입점 열거
 
-읽으면서 다음을 찾는다:
+`vue_output/routes.json`에서 라우트 목록을 읽는다.
+각 라우트 = 사용자가 진입할 수 있는 하나의 컨텍스트(페이지).
 
-1. **클라이언트 필터링 로직**
-   - computed 속성 또는 watch에서 전체 목록을 필터링하는 코드
-   - 필터 조건에 사용되는 데이터 필드
-   - 필터 초기화 메서드
+라우트별로 연결된 컴포넌트 파일을 직접 읽고, **사용자가 해당 페이지에서 취할 수 있는 모든 행동**을 열거한다.
 
-2. **클라이언트 정렬 로직**
-   - 목록을 클라이언트에서 정렬하는 코드
-   - 정렬 기준 필드
+행동 = 버튼 클릭, 폼 제출, 입력값 변경, 페이지 진입 시 자동 로드 등 사용자가 명시적·묵시적으로 트리거하는 모든 것.
 
-3. **백엔드 EP 없는 조건부 UI 동작**
-   - 서버 호출 없이 클라이언트 상태에 따라 표시/숨김이 결정되는 주요 UI 요소
-   - 비즈니스 도메인 상태값을 조건으로 사용하는 것만 포함 (`loading` 같은 UX 전용은 제외)
+---
 
-4. **백엔드 데이터 기반 클라이언트 행동**
-   - 백엔드 응답 필드를 재료로 사용자가 직접 트리거하는 행동
-   - 예: 파일 다운로드(`attachment` 필드 → PDF 저장), 외부 URL 오픈(`attachmentUrl` 필드 → 새 탭)
-   - 이 행동 자체에는 전용 백엔드 EP가 없지만, 사용자 관점에서는 독립적인 기능
+### Step 4-b — 행동을 결과 유형으로 분류
 
-**추출 판단 기준**
+열거한 행동 각각을 아래 결과 유형으로 분류한다.
+분류 기준은 "이 행동이 사용자에게 어떤 결과를 낳는가"이다.
 
-아래 조건을 만족하면 CL Rule Record로 추출한다:
+| 결과 유형 | 설명 | 백엔드 EP |
+|---|---|---|
+| `server_write` | 서버에 데이터를 생성·수정·삭제한다 | 있음 |
+| `server_read` | 서버에서 데이터를 조회해 화면에 표시한다 | 있음 |
+| `data_driven_action` | 서버 데이터를 재료로 콘텐츠에 접근한다 (파일 다운로드, 외부 URL 오픈) | 없거나 재활용 |
+| `client_filter` | 서버 응답 전체를 받아 클라이언트에서 필터링·정렬한다 | 없음 |
+| `client_feedback` | 비즈니스 상태에 따라 조건부로 UI를 표시하거나 비활성화한다 | 없음 |
 
-| 케이스 | 포함 조건 |
-|---|---|
-| 필터링·정렬 | 백엔드 EP의 request_schema에 해당 파라미터가 없을 것 |
-| 데이터 기반 클라이언트 행동 | 백엔드 응답 데이터를 재료로 사용할 것 + 사용자에게 직접 노출되는 결과가 있을 것 (다운로드, 새 탭 오픈 등) |
-
-**제외 기준 (뽑지 않을 것):**
-- `loading`, `isOpen` 같은 순수 UI 상태 토글
+**제외 유형 (CL Rule Record로 뽑지 않는다):**
+- `loading`, `isOpen` 같은 순수 UX 상태 토글
 - 라우터 이동만 하는 것 (페이지 이동 자체는 기능이 아님)
-- 백엔드 데이터와 무관한 것
+- 서버 데이터와 완전히 무관한 것
 
-**CL Rule Record 스키마**
+---
+
+### Step 4-c — CL Rule Record 생성
+
+분류 결과에 따라 CL Rule Record를 생성한다.
+
+**`server_write` / `server_read`**: 백엔드 Rule Record에 이미 존재하므로 CL Rule Record를 새로 만들지 않는다. 대신 해당 백엔드 Rule Record의 `related_client_component` 필드에 컴포넌트 경로를 기록한다.
+
+**나머지 유형**: 백엔드 EP가 없으므로 CL Rule Record로 뽑는다.
 
 ```json
 {
   "rule_id": "CP-001-R-001",
   "source": "client",
+  "component": "views/student/lecture_manage/Lecture.vue",
+  "route": "/student/lecture",
+  "actor": "student",
+  "capability": "개설수업의 수업계획서를 조회할 수 있다",
+  "behavior_type": "data_driven_action",
+  "action_detail": {
+    "trigger": "수업계획서 '보기' 버튼 클릭",
+    "outcomes": [
+      { "condition": "lecture.attachmentUrl 존재", "result": "외부 URL을 새 탭으로 오픈" },
+      { "condition": "lecture.attachment 존재", "result": "lecture/get API 호출 후 PDF 다운로드" }
+    ]
+  },
+  "related_backend_ep": "EP-031",
+  "evidence": {
+    "file": "components/Lecture.vue",
+    "symbol": "downloadAttachment / openAttachmentUrl"
+  },
+  "confidence": "high",
+  "terminology_status": "ungrounded"
+}
+```
+
+`client_filter` 예시:
+```json
+{
+  "rule_id": "CP-002-R-001",
+  "source": "client",
   "component": "views/graduate/GraduateCandidate.vue",
+  "route": "/admin/graduate/candidate",
+  "actor": "admin",
   "capability": "졸업 후보를 졸업학기·배움과정·국문이름으로 필터링할 수 있다",
   "behavior_type": "client_filter",
   "filter_fields": [
@@ -363,23 +382,18 @@ if enrollment.Status != REQUESTED {
     { "field": "student.grade", "label": "배움과정" },
     { "field": "name.korean", "label": "국문이름" }
   ],
-  "reset_action": "searchInit",
   "related_backend_ep": "EP-045",
   "evidence": {
     "file": "views/graduate/GraduateCandidate.vue",
     "symbol": "filteredList",
-    "reason": "백엔드 EP의 request_schema에 필터 파라미터가 없음. 클라이언트가 전체 목록을 받아 로컬에서 필터링"
+    "reason": "백엔드 EP의 request_schema에 필터 파라미터가 없음"
   },
   "confidence": "high",
   "terminology_status": "ungrounded"
 }
 ```
 
-`behavior_type` 값:
-- `client_filter` — 클라이언트 측 필터링
-- `client_sort` — 클라이언트 측 정렬
-- `conditional_display` — 조건부 UI 표시 (비즈니스 상태 기반)
-- `data_driven_action` — 백엔드 데이터를 재료로 사용자가 트리거하는 행동 (파일 다운로드, 외부 URL 오픈 등)
+---
 
 **결과 병합**
 
