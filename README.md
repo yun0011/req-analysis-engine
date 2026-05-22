@@ -56,7 +56,8 @@ run 스킬을 실행해주세요
 - `reconcile` - 불일치 해소
 
 **산출물:**
-- `.req-analysis/6_structured_spec.json` - 최종 요구사항 명세 (75개 FR)
+- `.req-analysis/spec/functional_requirements.json` - 기능 요구사항 명세 (75개 FR)
+- `.req-analysis/spec/ui_requirements.md` - UI 요구사항 명세
 
 ## 프로젝트 구조
 
@@ -83,18 +84,21 @@ req-analysis-engine/
 ├── vue_output/                # 클라이언트 분석 (gitignore)
 └── .req-analysis/             # 파이프라인 산출물
     ├── 1_entry_points.json
-    ├── 2_slices.json
+    ├── 2_effect_points.json
     ├── 3_rule_records.json
     ├── 4_domain_groups.json
-    ├── 5_field_lifecycle.json
-    ├── 6_structured_spec.json  # 최종 명세
-    ├── 7_audit_report.json
-    └── 8_reconcile_report.json
+    ├── 5_field_spec.json
+    ├── spec/                   # 최종 요구사항 명세 ⭐
+    │   ├── functional_requirements.json
+    │   └── ui_requirements.md
+    └── validation/             # 검증 보고서
+        ├── audit_report.json
+        └── reconcile_report.json
 ```
 
 ## 주요 산출물
 
-### 최종 명세 (6_structured_spec.json)
+### 최종 명세 (functional_requirements.json)
 
 ```json
 {
@@ -143,10 +147,10 @@ req-analysis-engine/
 | 1. Extract | Python 정적 분석 | AST 추출, Call Graph 생성 | `analysis_output/`, `vue_output/` |
 | 2. Slice | LLM | 진입점 → 슬라이스 → Rule Record | `3_rule_records.json` |
 | 3. Group | LLM | 도메인 그룹핑, 클러스터링 | `4_domain_groups.json` |
-| 4. Field | LLM | 필드 생애주기 제약 분석 | `5_field_lifecycle.json` |
-| 5. Derive | LLM (교차검증) | 기능 요구사항 도출 | `6_structured_spec.json` |
-| 6. Audit | LLM | 커버리지 검증, 고아 함수 탐지 | `7_audit_report.json` |
-| 7. Reconcile | LLM | 불일치 해소 | `8_reconcile_report.json` |
+| 4. Field | LLM | 필드 생애주기 제약 분석 | `5_field_spec.json` |
+| 5. Derive | LLM (교차검증) | 기능 요구사항 도출 + UI 렌더링 | `spec/functional_requirements.json`, `spec/ui_requirements.md` |
+| 6. Audit | LLM | 커버리지 검증, 고아 함수 탐지 | `validation/audit_report.json` |
+| 7. Reconcile | LLM | enum 일관성 검증 + 불일치 수정 | `validation/reconcile_report.json` |
 
 ### 핵심 개념
 
