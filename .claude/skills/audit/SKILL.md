@@ -12,8 +12,8 @@ description: |
 요구사항 도출 파이프라인의 **Phase 5**이다.
 요구사항 문서가 완성된 후 "이 코드는 어느 요구사항에 반영됐는가"를 역방향으로 검증한다.
 
-입력: `analysis_output/`, `global_call_graph.json`, `.req-analysis/1_entry_points.json`, `.req-analysis/3_rule_records.json`, `.req-analysis/6_structured_spec.json`
-출력: `.req-analysis/7_audit_report.json`
+입력: `analysis_output/`, `global_call_graph.json`, `.req-analysis/1_entry_points.json`, `.req-analysis/3_rule_records.json`, `.req-analysis/spec/functional_requirements.json`
+출력: `.req-analysis/validation/audit_report.json`
 
 ---
 
@@ -84,7 +84,7 @@ XC의 `evidence_refs`를 수집한다.
 
 ## Step 4 — 보고서 생성
 
-`.req-analysis/7_audit_report.json`:
+`.req-analysis/validation/audit_report.json`:
 ```json
 {
   "summary": {

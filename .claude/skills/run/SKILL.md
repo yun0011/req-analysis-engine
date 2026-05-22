@@ -44,10 +44,10 @@ Phase 7  reconcile  enum 진실표 수집 + 문서 스캔 + 불일치 수정
 | `.req-analysis/3_rule_records.json` | 2 완료 | 파일 존재 + `rule_records` 배열 비어있지 않음 |
 | `.req-analysis/4_domain_groups.json` | 3 완료 | 파일 존재 + `domain_groups` 배열 비어있지 않음 |
 | `.req-analysis/5_field_spec.json` | 4 완료 | 파일 존재 + `domains` 배열 비어있지 않음 |
-| `.req-analysis/6_structured_spec.json` | 5 완료 | 파일 존재 + `structured_spec.domains` 비어있지 않음 |
-| `.req-analysis/UI_requirements.md` | 5 완료 | 파일 존재 + 비어있지 않음 |
-| `.req-analysis/7_audit_report.json` | 6 완료 | 파일 존재 |
-| `.req-analysis/8_reconcile_report.json` | 7 완료 | 파일 존재 |
+| `.req-analysis/spec/functional_requirements.json` | 5 완료 | 파일 존재 + `structured_spec.domains` 비어있지 않음 |
+| `.req-analysis/spec/ui_requirements.md` | 5 완료 | 파일 존재 + 비어있지 않음 |
+| `.req-analysis/validation/audit_report.json` | 6 완료 | 파일 존재 |
+| `.req-analysis/validation/reconcile_report.json` | 7 완료 | 파일 존재 |
 
 확인 결과를 다음 형식으로 출력한다:
 
@@ -323,7 +323,7 @@ conflict가 {N}개 발견됐습니다:
 
 ## Phase 6 — audit 실행 및 검토
 
-**실행 조건**: Phase 5 완료 + `.req-analysis/8_audit_report.json` 없음
+**실행 조건**: Phase 5 완료 + `.req-analysis/validation/audit_report.json` 없음
 
 `/audit` 스킬을 실행한다.
 
@@ -373,7 +373,7 @@ conflict가 {N}개 발견됐습니다:
 
 ## Phase 7 — reconcile 실행 및 검토
 
-**실행 조건**: Phase 6 완료 + `.req-analysis/9_reconcile_report.json` 없음
+**실행 조건**: Phase 6 완료 + `.req-analysis/validation/reconcile_report.json` 없음
 
 `/reconcile` 스킬을 실행한다.
 
@@ -431,12 +431,14 @@ conflict가 {N}개 발견됐습니다:
   .req-analysis/2_effect_points.json      — 효과 지점 N개
   .req-analysis/3_rule_records.json       — Rule Record N개 (스키마 보강 완료)
   .req-analysis/4_domain_groups.json      — 도메인 그룹 N개
-  .req-analysis/5_field_spec.json         — 필드 생애주기 제약 N개 도메인
-  .req-analysis/6_features/              — 도메인별 기능 후보
-  .req-analysis/7_structured_spec.json   — FR N개 / XC N개 (필드 제약 + 스키마 포함)
-  .req-analysis/UI_requirements.md        — 화면 구성 요구사항
-  .req-analysis/8_audit_report.json       — 커버리지 N%
-  .req-analysis/9_reconcile_report.json   — enum 수정 N건 / 잔여 conflict N개
+  .req-analysis/5_field_spec.json             — 필드 생애주기 제약 N개 도메인
+  .req-analysis/5_features/                  — 도메인별 기능 후보 (중간 산출물)
+  .req-analysis/validation/audit_report.json           — 커버리지 N%
+  .req-analysis/validation/reconcile_report.json       — enum 수정 N건 / 잔여 conflict N개
+
+  [최종 요구사항 명세]
+  .req-analysis/spec/functional_requirements.json   — 기능 요구사항: FR N개 / XC N개
+  .req-analysis/spec/ui_requirements.md       — UI 요구사항: 화면 표시 규칙 N개
 
 주의 사항:
   - conflict: {N}개 → 수동 검토 필요

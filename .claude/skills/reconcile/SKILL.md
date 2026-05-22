@@ -3,8 +3,8 @@
 요구사항 도출 파이프라인의 **Phase 6**이다.
 요구사항 문서가 완성된 후, 문서에 사용된 코드값(enum 상수)이 실제 소스 코드와 일치하는지 역방향으로 검증하고 수정한다.
 
-입력: `target_legacy_code/**/types/*.go`, `.req-analysis/6_structured_spec.json`, `.req-analysis/UI_requirements.md`
-출력: `.req-analysis/8_reconcile_report.json` (수정 내역 + 잔여 충돌 목록)
+입력: `target_legacy_code/**/types/*.go`, `.req-analysis/spec/functional_requirements.json`, `.req-analysis/spec/ui_requirements.md`
+출력: `.req-analysis/validation/reconcile_report.json` (수정 내역 + 잔여 충돌 목록)
 
 ---
 
@@ -140,13 +140,13 @@ const (
 - 도메인 자체가 불분명할 때
 - 의미적 판단이 필요해 단순 치환이 부적절할 때
 
-conflict 항목은 `8_reconcile_report.json`의 `remaining_conflicts` 배열에 기록한다.
+conflict 항목은 `validation/reconcile_report.json`의 `remaining_conflicts` 배열에 기록한다.
 
 ---
 
 ## Step 4 — 보고서 생성
 
-`.req-analysis/8_reconcile_report.json`:
+`.req-analysis/validation/reconcile_report.json`:
 ```json
 {
   "generated_at": "YYYY-MM-DD",

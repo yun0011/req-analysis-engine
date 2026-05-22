@@ -13,7 +13,7 @@ description: |
 코드 사실에서 자연어 요구사항으로 넘어가는 단계다. hallucination 위험이 가장 높은 구간이므로 교차검증을 적용한다.
 
 입력: `.req-analysis/4_domain_groups.json`, `vue_output/` (선택)
-출력: `.req-analysis/5_features/DG-{ID}.json`, `.req-analysis/6_structured_spec.json`, `.req-analysis/UI_requirements.md`
+출력: `.req-analysis/5_features/DG-{ID}.json`, `.req-analysis/spec/functional_requirements.json`, `.req-analysis/spec/ui_requirements.md`
 
 **vue_output 소비 우선순위**
 - `display_labels.json` → FR의 `ui.display_labels` (상태값 한국어 라벨)
@@ -246,7 +246,7 @@ DG-ENROLLMENT-C-22: 등록금 납부 상태이면 확정 가능
 
 ### 최종 문서 형식
 
-`.req-analysis/6_structured_spec.json`:
+`.req-analysis/spec/functional_requirements.json`:
 ```json
 {
   "structured_spec": {
@@ -332,19 +332,19 @@ DG-ENROLLMENT-C-22: 등록금 납부 상태이면 확정 가능
 
 ---
 
-## Step 4 — UI_requirements.md 렌더링
+## Step 4 — ui_requirements.md 렌더링
 
-`6_structured_spec.json` 생성이 완료된 직후 실행한다.
+`functional_requirements.json` 생성이 완료된 직후 실행한다.
 
-**목적**: `6_structured_spec.json`의 `ui` 섹션을 사람이 읽을 수 있는 마크다운으로 렌더링한다.
-새로운 정보를 추가하지 않는다 — `6_structured_spec.json`의 부분집합을 다른 형식으로 표현하는 것이다.
+**목적**: `.req-analysis/spec/functional_requirements.json`의 `ui` 섹션을 사람이 읽을 수 있는 마크다운으로 렌더링한다.
+새로운 정보를 추가하지 않는다 — `functional_requirements.json`의 부분집합을 다른 형식으로 표현하는 것이다.
 
 **렌더링 대상**:
 - `ui != null`인 모든 FR의 화면 표시 규칙
 - CL-* (클라이언트 전용) FR
 - UI에 영향을 주는 cross_cutting 항목
 
-**출력 형식** `.req-analysis/UI_requirements.md`:
+**출력 형식** `.req-analysis/spec/ui_requirements.md`:
 
 ```markdown
 # UI 요구사항

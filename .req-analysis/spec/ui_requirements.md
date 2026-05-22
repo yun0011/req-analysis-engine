@@ -1,7 +1,7 @@
 # UI 요구사항
 
-> 이 문서는 6_structured_spec.json의 ui 섹션을 렌더링한 뷰입니다.
-> 정규 소스는 6_structured_spec.json이며, 이 문서는 읽기 전용입니다.
+> 이 문서는 functional_requirements.json의 ui 섹션을 렌더링한 뷰입니다.
+> 정규 소스는 functional_requirements.json이며, 이 문서는 읽기 전용입니다.
 > 생성일: 2026-05-22
 
 ---
