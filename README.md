@@ -15,7 +15,7 @@
 
 ```bash
 # Python 3.10+ 및 의존성 설치
-pip install tree-sitter-go
+pip install -r requirements.txt
 
 # 분석 대상 코드 준비 (gitignore 되어있음)
 # target_legacy_code/pati-server/  # Go 백엔드
