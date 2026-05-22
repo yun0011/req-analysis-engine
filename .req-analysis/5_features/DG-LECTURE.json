@@ -1,0 +1,384 @@
+{
+  "domain_group": "DG-LECTURE",
+  "features": [
+    {
+      "feature_id": "FR-LECTURE-001",
+      "capability": "개설수업을 등록할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/lecture/add"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "새 개설수업이 등록된다"
+        ],
+        "side_effects": [
+          "해당 학기가 존재하지 않으면 자동으로 READY 상태로 생성된다"
+        ],
+        "guard_failure": []
+      },
+      "field_constraints": [
+        "교과목(courseID)은 등록 후 변경할 수 없다",
+        "담당 스승(userID)은 등록 후 변경할 수 없다",
+        "학기(year + semester)는 등록 후 변경할 수 없다"
+      ],
+      "ui": {
+        "display_fields": [
+          "id",
+          "course",
+          "user",
+          "category",
+          "term",
+          "classroom",
+          "limit",
+          "schedule"
+        ],
+        "display_labels": {
+          "category": {
+            "ET": "스튜디오/선택",
+            "RT": "스튜디오/필수",
+            "EU": "수업/선택",
+            "RU": "수업/필수",
+            "EW": "워크숍/선택",
+            "RW": "워크숍/필수",
+            "EP": "프로젝트/선택",
+            "RP": "프로젝트/필수"
+          },
+          "semester": {
+            "SPRING": "봄",
+            "FALL": "가을"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-LECTURE-C-001",
+        "EP-047-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-002",
+      "capability": "개설수업 정보를 수정할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/lecture/update/info"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다",
+          "해당 학기가 FINISHED 상태가 아니어야 한다",
+          "비활성화(disabled)된 수업이 아니어야 한다",
+          "수정 후 수강 인원 제한이 이미 승인된 인원보다 작아지면 안 된다"
+        ],
+        "postconditions": [
+          "분류(category), 강의실, 수강 인원, 일정, 설명이 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "학기 FINISHED → 수정 불가",
+          "비활성화 수업 → 수정 불가",
+          "정원 초과 → 수정 불가"
+        ]
+      },
+      "field_constraints": [
+        "교과목(courseID)은 수정할 수 없다",
+        "담당 스승(userID)은 수정할 수 없다",
+        "학기(year + semester)는 수정할 수 없다"
+      ],
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-001",
+        "EP-032-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-003",
+      "capability": "개설수업을 비활성화(폐강)할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/lecture/disable"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "개설수업의 enabled가 FALSE로 설정된다 (소프트 삭제)"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": {
+          "required_text": "폐강하겠습니다.",
+          "component": "views/admin/academic_manage/lecture/DetailLecture.vue"
+        },
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-LECTURE-C-001",
+        "EP-010-R-001",
+        "CP-CL-004"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-004",
+      "capability": "개설수업을 삭제할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/lecture/remove"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "개설수업이 삭제된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": {
+          "message": "삭제하시겠습니까?",
+          "component": "views/admin/academic_manage/lecture/Lecture.vue"
+        },
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-LECTURE-C-001",
+        "EP-035-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-005",
+      "capability": "개설수업 목록을 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/lecture/list"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "학기(year, semester), 교과목명(name), 스승명(userName), 배움과정(description)으로 필터링된 개설수업 목록을 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "course",
+          "user",
+          "category",
+          "term",
+          "classroom",
+          "limit",
+          "approved",
+          "applied",
+          "enabled"
+        ],
+        "display_labels": {
+          "category": {
+            "ET": "스튜디오/선택",
+            "RT": "스튜디오/필수",
+            "EU": "수업/선택",
+            "RU": "수업/필수",
+            "EW": "워크숍/선택",
+            "RW": "워크숍/필수",
+            "EP": "프로젝트/선택",
+            "RP": "프로젝트/필수"
+          },
+          "semester": {
+            "SPRING": "봄",
+            "FALL": "가을"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-LECTURE-C-004",
+        "EP-013-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-006",
+      "capability": "개설수업을 단건 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/lecture/get"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "lectureID에 해당하는 개설수업 상세 정보를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-004",
+        "EP-050-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-007",
+      "capability": "개설수업 목록을 Excel 파일로 내보낼 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee)",
+        "action": "POST /api/v1/lecture/export"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 Employee 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "특정 학기의 개설수업 통계가 Excel(.xlsx) 파일로 반환된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-004",
+        "EP-015-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-008",
+      "capability": "개설수업 첨부파일(수업계획서)을 수정할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/lecture/update/attachment"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "개설수업의 attachment(바이너리 파일)가 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-002",
+        "EP-057-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-009",
+      "capability": "개설수업 성적 처리 완료 여부를 변경할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "POST /api/v1/lecture/update/graded"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 담당 Professor 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "개설수업의 graded 필드가 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "담당 교수가 아닌 경우 ErrForbidden (403)"
+        ]
+      },
+      "field_constraints": [
+        "개설수업 성적 처리 완료 여부(graded)는 별도의 성적 처리 기능을 통해서만 변경된다"
+      ],
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-002",
+        "EP-018-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-LECTURE-010",
+      "capability": "개설수업 리뷰(수업 요약/기대/환경/공지)를 등록할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "POST /api/v1/lecture/update/review"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 담당 Professor 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "개설수업의 summary, expectation, environment, notice 필드가 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "담당 교수가 아닌 경우 ErrForbidden (403)"
+        ]
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-LECTURE-C-003",
+        "EP-017-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}

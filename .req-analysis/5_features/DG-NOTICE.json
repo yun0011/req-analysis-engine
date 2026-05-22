@@ -1,0 +1,165 @@
+{
+  "domain_group": "DG-NOTICE",
+  "features": [
+    {
+      "feature_id": "FR-NOTICE-001",
+      "capability": "공지사항을 등록할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/board/add (type=notice)"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "공지사항이 등록된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "field_constraints": [
+        "게시물 유형(type)은 등록 후 변경할 수 없다"
+      ],
+      "ui": null,
+      "evidence_refs": [
+        "DG-NOTICE-C-001",
+        "EP-053-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-NOTICE-002",
+      "capability": "공지사항을 수정할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/board/update/info (type=notice)"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "공지사항의 제목(title)과 본문(body)이 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-NOTICE-C-001",
+        "EP-022-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-NOTICE-003",
+      "capability": "공지사항을 삭제할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/board/remove"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "공지사항이 삭제된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-NOTICE-C-001",
+        "EP-055-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-NOTICE-004",
+      "capability": "공지사항 목록을 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/board/list (type=notice)"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "공지사항 목록을 페이지네이션과 함께 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "title",
+          "timestamp"
+        ],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-NOTICE-C-002",
+        "EP-031-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-NOTICE-005",
+      "capability": "공지사항을 단건 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/board/get"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "boardID에 해당하는 공지사항 상세 정보를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "type",
+          "title",
+          "body",
+          "attachment"
+        ],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-NOTICE-C-002",
+        "EP-029-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}

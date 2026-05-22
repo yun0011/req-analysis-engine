@@ -1,0 +1,840 @@
+{
+  "domains": [
+    {
+      "domain": "User",
+      "entity": "User / Student",
+      "source_group": "DG-USER",
+      "create_ep": "EP-011-R-001 (addUser)",
+      "update_ep": "EP-024-R-001 (updateUser), EP-041-R-001 (updateUserPicture), EP-059-R-001 (updateUserPassword)",
+      "fields": [
+        {
+          "field": "loginID",
+          "json_key": "login_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "UpdateStudent.vue / UpdateOthers.vue: loginID input disabled=True",
+            "schema": "INSERT INTO user(login_id,...) / UPDATE user SET korean_name=... (login_id 없음)"
+          },
+          "derived_requirement": "로그인 아이디는 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "type (권한)",
+          "json_key": "type",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "UpdateOthers.vue: type(권한) checkbox disabled=True (Others 사용자만)",
+            "schema": "UPDATE user SET korean_name=... (type 없음 — type 변경 불가)"
+          },
+          "derived_requirement": "사용자 권한(유형)은 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "picture",
+          "json_key": "picture",
+          "constraint": "create_only",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "note": "별도 EP (updateUserPicture) 사용"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addUser: image param / updateUserPicture: 별도 EP (EP-041)"
+          },
+          "derived_requirement": "사용자 프로필 사진은 별도의 사진 수정 기능을 통해서만 변경할 수 있다."
+        },
+        {
+          "field": "koreanName",
+          "json_key": "korean_name",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT/UPDATE 모두 korean_name 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "englishName",
+          "json_key": "english_name",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "AddStudent/AddOthers/UpdateStudent/UpdateOthers 모두 *영문이름 (required)"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "id",
+          "json_key": "id",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false
+            },
+            "update": {
+              "present": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "어떤 request에도 없음, response에만"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "grade (배움과정, 학생 전용)",
+          "json_key": "grade",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "AddStudent: *배움과정 required / UpdateStudent: *배움과정 required"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "graduatedDate / graduatedSemester",
+          "json_key": "graduated_date / graduated_semester",
+          "constraint": "always_optional",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false
+            },
+            "update": {
+              "present": true,
+              "required": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "AddStudent/UpdateStudent: 졸업일자/졸업학기 (선택)"
+          },
+          "derived_requirement": "졸업 정보(졸업일자, 졸업학기)는 등록 및 수정 시 선택 입력이다."
+        }
+      ]
+    },
+    {
+      "domain": "Course",
+      "entity": "Course",
+      "source_group": "DG-COURSE",
+      "create_ep": "EP-006-R-001 (addCourse)",
+      "update_ep": "EP-019-R-001 (updateCourse)",
+      "fields": [
+        {
+          "field": "code (과목코드)",
+          "json_key": "code",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "UpdateCourse.vue: code input에 disabled class 및 disabled attribute 적용",
+            "schema": "INSERT INTO course(domain,code,...) / UPDATE course SET domain=?,korean_name=?,... (code 제외)"
+          },
+          "derived_requirement": "과목코드는 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "domain (분야코드)",
+          "json_key": "domain",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT/UPDATE 모두 domain 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "koreanName (교과목명)",
+          "json_key": "korean_name",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT/UPDATE 모두 korean_name 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "englishName",
+          "json_key": "english_name",
+          "constraint": "always_optional",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false
+            },
+            "update": {
+              "present": true,
+              "required": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT/UPDATE 모두 english_name 포함, nullable"
+          },
+          "derived_requirement": "영문 교과목명은 등록 및 수정 시 선택 입력이다."
+        },
+        {
+          "field": "id",
+          "json_key": "id",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false
+            },
+            "update": {
+              "present": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "AUTO_INCREMENT, 어떤 request에도 없음"
+          },
+          "derived_requirement": null
+        }
+      ]
+    },
+    {
+      "domain": "Lecture",
+      "entity": "Lecture",
+      "source_group": "DG-LECTURE",
+      "create_ep": "EP-047-R-001 (addLecture)",
+      "update_ep": "EP-032-R-001 (updateLecture), EP-057-R-001 (updateLectureAttachment), EP-018-R-001 (updateLectureGraded), EP-017-R-001 (reviewLecture)",
+      "fields": [
+        {
+          "field": "courseID (교과목)",
+          "json_key": "course_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addLecture SQL: course_id 포함 / updateLecture SQL: category,classroom,limit,schedule,description,attachment_url만 업데이트"
+          },
+          "derived_requirement": "개설수업의 교과목은 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "userID (담당 스승)",
+          "json_key": "user_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addLecture SQL: user_id 포함 / updateLecture SQL: user_id 미포함"
+          },
+          "derived_requirement": "개설수업의 담당 스승은 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "term (year + semester)",
+          "json_key": "year / semester",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "required": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addLecture SQL: term.year, term.semester 포함 / updateLecture SQL: 학기 미포함"
+          },
+          "derived_requirement": "개설수업의 학기(연도/학기)는 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "category",
+          "json_key": "category",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addLecture/updateLecture 모두 category 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "enabled",
+          "json_key": "enabled",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false,
+              "note": "기본값 TRUE"
+            },
+            "update": {
+              "present": false,
+              "note": "disableLecture EP를 통해서만 변경"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "disableLecture: UPDATE lecture SET enabled=FALSE (별도 EP-010)"
+          },
+          "derived_requirement": "개설수업 비활성화는 별도의 비활성화 기능을 통해서만 처리된다 (소프트 삭제)."
+        },
+        {
+          "field": "graded",
+          "json_key": "graded",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false
+            },
+            "update": {
+              "present": false,
+              "note": "updateLectureGraded EP(EP-018)를 통해서만 변경"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "updateLectureGraded: SET graded=? (별도 EP)"
+          },
+          "derived_requirement": "개설수업 성적 처리 완료 여부는 별도의 성적 처리 기능을 통해서만 변경된다."
+        },
+        {
+          "field": "id",
+          "json_key": "id",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false
+            },
+            "update": {
+              "present": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "AUTO_INCREMENT"
+          },
+          "derived_requirement": null
+        }
+      ]
+    },
+    {
+      "domain": "Registration",
+      "entity": "Registration",
+      "source_group": "DG-REGISTRATION",
+      "create_ep": "EP-021-R-001 (addRegistration)",
+      "update_ep": "EP-038-R-001 (updateRegistration), EP-003-R-001 (gradeRegistration)",
+      "fields": [
+        {
+          "field": "lectureID (수강 강의)",
+          "json_key": "lecture_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT INTO registration(student_id, lecture_id, status) / UPDATE registration SET status=? (lecture_id 미포함)"
+          },
+          "derived_requirement": "수강신청의 강의는 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "userID (수강생)",
+          "json_key": "student_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT INTO registration(student_id, ...) / UPDATE registration SET status=? (student_id 미포함)"
+          },
+          "derived_requirement": "수강신청의 수강생은 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "status (수강신청 상태)",
+          "json_key": "status",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true,
+              "note": "초기값 서버 설정"
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT: status 포함 (초기값) / UPDATE registration SET status=?"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "grade (passed, recommended, comment)",
+          "json_key": "passed / recommended / comment",
+          "constraint": "server_assigned",
+          "lifecycle": {
+            "create": {
+              "present": false
+            },
+            "update": {
+              "present": false,
+              "note": "gradeRegistration EP(EP-003)를 통해서만 설정"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "updateRegistrationGrade: SET passed=?,recommended=?,comment=? (별도 EP)"
+          },
+          "derived_requirement": "수강 성적(이수여부, 추천여부, 평가)은 별도의 성적 처리 기능을 통해서만 입력된다."
+        }
+      ]
+    },
+    {
+      "domain": "Term",
+      "entity": "Term",
+      "source_group": "DG-TERM",
+      "create_ep": "N/A (terms are inserted automatically when addLecture is called)",
+      "update_ep": "EP-034-R-001 (updateTerm)",
+      "fields": [
+        {
+          "field": "year + semester (학기 식별자)",
+          "json_key": "year / semester",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true,
+              "note": "addLecture 시 자동 생성"
+            },
+            "update": {
+              "present": true,
+              "required": true,
+              "note": "WHERE 조건으로만 사용 (변경 불가)"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "UPDATE term SET status=? WHERE year=? AND semester=? — year/semester는 PK 역할"
+          },
+          "derived_requirement": "학기(연도+학기)는 수정할 수 없다 (식별자로만 사용)."
+        },
+        {
+          "field": "status (학기 상태)",
+          "json_key": "status",
+          "constraint": "conditionally_mutable",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false,
+              "note": "초기값 READY"
+            },
+            "update": {
+              "present": true,
+              "required": true,
+              "note": "FINISHED 이후 변경 불가"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "ui": "Operation.vue: disabled=(!isAdmin || term[year+semester]==='FINISHED') — FINISHED 이후 모든 UI 비활성화",
+            "schema": "updateTerm: SET status=? WHERE year=? AND semester=?"
+          },
+          "derived_requirement": "학기 상태가 FINISHED(종강)로 변경된 후에는 어떤 상태로도 되돌릴 수 없다."
+        }
+      ]
+    },
+    {
+      "domain": "Board (공지/학칙/학사일정)",
+      "entity": "Board",
+      "source_group": "DG-NOTICE / DG-RULE / DG-SCHEDULE",
+      "create_ep": "EP-053-R-001 (addBoard)",
+      "update_ep": "EP-022-R-001 (updateBoard), EP-048-R-001 (updateBoardAttachment)",
+      "fields": [
+        {
+          "field": "type (게시판 유형)",
+          "json_key": "type",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false,
+              "mutable": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT INTO board(type,title,body,...) / UPDATE board SET title=?,body=? WHERE id=? (type 미포함)"
+          },
+          "derived_requirement": "게시물 유형(공지/학칙/학사일정)은 등록 후 변경할 수 없다."
+        },
+        {
+          "field": "title",
+          "json_key": "title",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT/UPDATE 모두 title 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "attachment",
+          "json_key": "attachment",
+          "constraint": "always_optional",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false
+            },
+            "update": {
+              "present": false,
+              "note": "updateBoardAttachment EP(EP-048)를 통해서만 변경"
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "INSERT: attachment 포함 / updateBoardAttachment: 별도 EP"
+          },
+          "derived_requirement": "게시물 첨부파일은 별도의 첨부파일 수정 기능을 통해서만 변경된다."
+        }
+      ]
+    },
+    {
+      "domain": "Evaluation",
+      "entity": "Evaluation",
+      "source_group": "DG-EVALUATION",
+      "create_ep": "EP-001-R-001 (addEvaluation)",
+      "update_ep": "EP-028-R-001 (updateEvaluation)",
+      "fields": [
+        {
+          "field": "lectureID (평가 대상 강의)",
+          "json_key": "lecture_id",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addEvaluation/updateEvaluation 모두 lectureID 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "satisfaction, achievement (평가 점수)",
+          "json_key": "satisfaction / achievement",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "addEvaluation/updateEvaluation 모두 포함"
+          },
+          "derived_requirement": null
+        },
+        {
+          "field": "positive, negative, comment (주관식 평가)",
+          "json_key": "positive / negative / comment",
+          "constraint": "always_optional",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": false
+            },
+            "update": {
+              "present": true,
+              "required": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "nullable 필드"
+          },
+          "derived_requirement": null
+        }
+      ]
+    },
+    {
+      "domain": "Attendance",
+      "entity": "Attendance",
+      "source_group": "DG-ATTENDANCE",
+      "create_ep": "N/A (setAttendance로 upsert)",
+      "update_ep": "EP-037-R-001 (setAttendance)",
+      "fields": [
+        {
+          "field": "status (출석 상태)",
+          "json_key": "status",
+          "constraint": "always_required",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": true,
+              "required": true
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "SetAttendance: SET status=? (upsert 방식)"
+          },
+          "derived_requirement": null
+        }
+      ]
+    },
+    {
+      "domain": "Certificate",
+      "entity": "Certificate",
+      "source_group": "DG-CERTIFICATE",
+      "create_ep": "EP-058-R-001 (issueCertificate)",
+      "update_ep": "N/A (발급 후 수정 불가)",
+      "fields": [
+        {
+          "field": "userID (수혜자)",
+          "json_key": "user_id",
+          "constraint": "immutable_after_create",
+          "lifecycle": {
+            "create": {
+              "present": true,
+              "required": true
+            },
+            "update": {
+              "present": false
+            },
+            "read": {
+              "present": true
+            }
+          },
+          "evidence": {
+            "schema": "issueCertificate: AddCertificateList (user_id 포함), 별도 수정 EP 없음"
+          },
+          "derived_requirement": "졸업증명서는 발급 후 수정하거나 취소할 수 없다."
+        }
+      ]
+    }
+  ]
+}

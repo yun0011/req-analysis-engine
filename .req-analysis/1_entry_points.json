@@ -1,0 +1,545 @@
+{
+  "entry_points": [
+    {
+      "ep_id": "EP-001",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/evaluation/add",
+      "handler_symbol": "addEvaluation",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-002",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/evaluation/list",
+      "handler_symbol": "listEvaluation",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-003",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/grade",
+      "handler_symbol": "gradeRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-004",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/term/list",
+      "handler_symbol": "listTerm",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-005",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/request/get/status",
+      "handler_symbol": "getRequestStatusByID",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-006",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/add",
+      "handler_symbol": "addCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-007",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/get",
+      "handler_symbol": "getUser",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-008",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/evaluation/get",
+      "handler_symbol": "getEvaluation",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-009",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/login",
+      "handler_symbol": "login",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-010",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/disable",
+      "handler_symbol": "disableLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-011",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/add",
+      "handler_symbol": "addUser",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-012",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/candidate/list",
+      "handler_symbol": "listCandidate",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-013",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/list",
+      "handler_symbol": "listLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-014",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/approve/batch",
+      "handler_symbol": "approveRegistrationBatch",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-015",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/export",
+      "handler_symbol": "exportLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-016",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/list",
+      "handler_symbol": "listCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-017",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/update/review",
+      "handler_symbol": "reviewLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-018",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/update/graded",
+      "handler_symbol": "updateLectureGraded",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-019",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/update",
+      "handler_symbol": "updateCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-020",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/list",
+      "handler_symbol": "listRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-021",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/add",
+      "handler_symbol": "addRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-022",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/update/info",
+      "handler_symbol": "updateBoard",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-023",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/drive/list",
+      "handler_symbol": "listDrive",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-024",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/update/info",
+      "handler_symbol": "updateUser",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-025",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/export",
+      "handler_symbol": "exportRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-026",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/term/graduated/list",
+      "handler_symbol": "listGraduatedTerm",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-027",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/report",
+      "handler_symbol": "reportRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-028",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/evaluation/update",
+      "handler_symbol": "updateEvaluation",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-029",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/get",
+      "handler_symbol": "getBoard",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-030",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/reset/password",
+      "handler_symbol": "resetUserPassword",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-031",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/list",
+      "handler_symbol": "listBoard",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-032",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/update/info",
+      "handler_symbol": "updateLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-033",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/logout",
+      "handler_symbol": "logout",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-034",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/term/update",
+      "handler_symbol": "updateTerm",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-035",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/remove",
+      "handler_symbol": "removeLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-036",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/certificate/getByUserID",
+      "handler_symbol": "getCertificateByUserID",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-037",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/attendance/set",
+      "handler_symbol": "setAttendance",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-038",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/update",
+      "handler_symbol": "updateRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-039",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/certificate/list",
+      "handler_symbol": "listCertificate",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-040",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/get",
+      "handler_symbol": "getCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-041",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/update/picture",
+      "handler_symbol": "updateUserPicture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-042",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/list",
+      "handler_symbol": "listUser",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-043",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/export",
+      "handler_symbol": "exportCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-044",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/course/remove",
+      "handler_symbol": "removeCourse",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-045",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/spring/add",
+      "handler_symbol": "addSpringRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-046",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/attendance/export",
+      "handler_symbol": "exportAttendance",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-047",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/add",
+      "handler_symbol": "addLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-048",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/update/attachment",
+      "handler_symbol": "updateBoardAttachment",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-049",
+      "type": "http",
+      "method": "GET",
+      "route": "/api/v1/drive/download",
+      "handler_symbol": "downloadDrive",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-050",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/get",
+      "handler_symbol": "getLecture",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-051",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/certificate/getByID",
+      "handler_symbol": "getCertificateByID",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-052",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/remove",
+      "handler_symbol": "removeRegistration",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-053",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/add",
+      "handler_symbol": "addBoard",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-054",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/export",
+      "handler_symbol": "exportUser",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-055",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/board/remove",
+      "handler_symbol": "removeBoard",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-056",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/registration/add/batch",
+      "handler_symbol": "addRegistrationBatch",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-057",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/lecture/update/attachment",
+      "handler_symbol": "updateLectureAttachment",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-058",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/certificate/issue",
+      "handler_symbol": "issueCertificate",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-059",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/user/update/password",
+      "handler_symbol": "updateUserPassword",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    },
+    {
+      "ep_id": "EP-060",
+      "type": "http",
+      "method": "POST",
+      "route": "/api/v1/attendance/list",
+      "handler_symbol": "listAttendance",
+      "file": "pati-server/api/server.go",
+      "registration_site": "pati-server/api/server.go"
+    }
+  ],
+  "total": 60
+}

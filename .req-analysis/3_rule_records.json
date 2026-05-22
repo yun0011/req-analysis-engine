@@ -1,0 +1,3402 @@
+{
+  "rule_records": [
+    {
+      "rule_id": "EP-001-R-001",
+      "entrypoint_id": "EP-001",
+      "effect_id": "EFX-001-01",
+      "subject_symbol": "addEvaluation",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isStudent == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "Evaluation"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/evaluation.go.json",
+        "route": "POST /api/v1/evaluation/add",
+        "domain_group": "DG-EVALUATION",
+        "entity_types": [
+          "Evaluation"
+        ]
+      },
+      "trigger": {
+        "actor": "student_user",
+        "action": "addEvaluation"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "satisfaction": "string",
+        "achievement": "string",
+        "positive": "string",
+        "negative": "string",
+        "comment": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/evaluation.go.json",
+          "symbol": "addEvaluation"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-002-R-001",
+      "entrypoint_id": "EP-002",
+      "effect_id": "EFX-002-01",
+      "subject_symbol": "listEvaluation",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isEmployee == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetEvaluationList"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/evaluation.go.json",
+        "route": "POST /api/v1/evaluation/list",
+        "domain_group": "DG-EVALUATION",
+        "entity_types": [
+          "GetEvaluationList"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee, Professor)",
+        "action": "listEvaluation"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "offset": "string",
+        "limit": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/evaluation.go.json",
+          "symbol": "listEvaluation"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-003-R-001",
+      "entrypoint_id": "EP-003",
+      "effect_id": "EFX-003-01",
+      "subject_symbol": "gradeRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "RegistrationGrade"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/grade",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "RegistrationGrade"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "gradeRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "registrationID": "string",
+        "passed": "string",
+        "recommended": "string",
+        "comment": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "gradeRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-004-R-001",
+      "entrypoint_id": "EP-004",
+      "effect_id": "EFX-004-01",
+      "subject_symbol": "listTerm",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetTerm"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/term.go.json",
+        "route": "POST /api/v1/term/list",
+        "domain_group": "DG-TERM",
+        "entity_types": [
+          "GetTerm"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listTerm"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string",
+        "status": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/term.go.json",
+          "symbol": "listTerm"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-005-R-001",
+      "entrypoint_id": "EP-005",
+      "effect_id": "EFX-005-01",
+      "subject_symbol": "getRequestStatusByID",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetRequestStatusByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/request.go.json",
+        "route": "POST /api/v1/request/get/status",
+        "domain_group": "DG-REQUEST",
+        "entity_types": [
+          "GetRequestStatusByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "getRequestStatusByID"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "requestID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/request.go.json",
+          "symbol": "getRequestStatusByID"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-006-R-001",
+      "entrypoint_id": "EP-006",
+      "effect_id": "EFX-006-01",
+      "subject_symbol": "addCourse",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "Course"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/add",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "Course"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addCourse"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "koreanName": "string",
+        "englishName": "string",
+        "domain": "string",
+        "code": "string",
+        "description": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "addCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-007-R-001",
+      "entrypoint_id": "EP-007",
+      "effect_id": "EFX-007-01",
+      "subject_symbol": "getUser",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetUserByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/get",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "GetUserByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin, Professor)",
+        "action": "getUser"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "getUser"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-008-R-001",
+      "entrypoint_id": "EP-008",
+      "effect_id": "EFX-008-01",
+      "subject_symbol": "getEvaluation",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isStudent == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetEvaluation"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/evaluation.go.json",
+        "route": "POST /api/v1/evaluation/get",
+        "domain_group": "DG-EVALUATION",
+        "entity_types": [
+          "GetEvaluation"
+        ]
+      },
+      "trigger": {
+        "actor": "student_user",
+        "action": "getEvaluation"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/evaluation.go.json",
+          "symbol": "getEvaluation"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-009-R-001",
+      "entrypoint_id": "EP-009",
+      "effect_id": "EFX-009-01",
+      "subject_symbol": "login",
+      "guard_predicates": [],
+      "guard_failure": [],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "Authenticate"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/login",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "Authenticate"
+        ]
+      },
+      "trigger": {
+        "actor": "unauthenticated_user",
+        "action": "login"
+      },
+      "request_schema": {
+        "name": "string",
+        "password": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "login"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-010-R-001",
+      "entrypoint_id": "EP-010",
+      "effect_id": "EFX-010-01",
+      "subject_symbol": "disableLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "disable",
+          "entity": "Lecture"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/disable",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "Lecture"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "disableLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "disableLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-011-R-001",
+      "entrypoint_id": "EP-011",
+      "effect_id": "EFX-011-01",
+      "subject_symbol": "addUser",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "User"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/add",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "User"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addUser"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "loginID": "string",
+        "type": "string",
+        "koreanName": "string",
+        "englishName": "string",
+        "birth": "string",
+        "email": "string",
+        "primaryPhone": "string",
+        "address": "string",
+        "alias": "string",
+        "chineseName": "string",
+        "secondaryPhone": "string",
+        "image": "string",
+        "grade": "string",
+        "status": "string",
+        "entranceDate": "string",
+        "entranceYear": "string",
+        "entranceSemester": "string",
+        "graduatedDate": "string",
+        "graduatedYear": "string",
+        "graduatedSemester": "string",
+        "emergencyPhone": "string",
+        "emergencyRelation": "string",
+        "score": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "addUser"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-012-R-001",
+      "entrypoint_id": "EP-012",
+      "effect_id": "EFX-012-01",
+      "subject_symbol": "listCandidate",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "ListCandidate"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/candidate/list",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "ListCandidate"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "listCandidate"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "listCandidate"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-013-R-001",
+      "entrypoint_id": "EP-013",
+      "effect_id": "EFX-013-01",
+      "subject_symbol": "listLecture",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetLectureByName"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/list",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "GetLectureByName"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "year": "string",
+        "semester": "string",
+        "offset": "string",
+        "limit": "string",
+        "name": "string",
+        "userID": "string",
+        "user_name": "string",
+        "description": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "listLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-014-R-001",
+      "entrypoint_id": "EP-014",
+      "effect_id": "EFX-014-01",
+      "subject_symbol": "approveRegistrationBatch",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "approve",
+          "entity": "RegistrationBatch"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/approve/batch",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "RegistrationBatch"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "approveRegistrationBatch"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "year": "string",
+        "semester": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "approveRegistrationBatch"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-015-R-001",
+      "entrypoint_id": "EP-015",
+      "effect_id": "EFX-015-01",
+      "subject_symbol": "exportLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetLectureStats"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/export",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "GetLectureStats"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "exportLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "year": "string",
+        "semester": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "exportLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-016-R-001",
+      "entrypoint_id": "EP-016",
+      "effect_id": "EFX-016-01",
+      "subject_symbol": "listCourse",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCourseByName"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/list",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "GetCourseByName"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listCourse"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string",
+        "name": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "listCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-017-R-001",
+      "entrypoint_id": "EP-017",
+      "effect_id": "EFX-017-01",
+      "subject_symbol": "reviewLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "LectureReview"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/update/review",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "LectureReview"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "reviewLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "summary": "string",
+        "expectation": "string",
+        "environment": "string",
+        "notice": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "reviewLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-018-R-001",
+      "entrypoint_id": "EP-018",
+      "effect_id": "EFX-018-01",
+      "subject_symbol": "updateLectureGraded",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "LectureGraded"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/update/graded",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "LectureGraded"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "updateLectureGraded"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "graded": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "updateLectureGraded"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-019-R-001",
+      "entrypoint_id": "EP-019",
+      "effect_id": "EFX-019-01",
+      "subject_symbol": "updateCourse",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Course"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/update",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "Course"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateCourse"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "courseID": "string",
+        "domain": "string",
+        "koreanName": "string",
+        "englishName": "string",
+        "description": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "updateCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-020-R-001",
+      "entrypoint_id": "EP-020",
+      "effect_id": "EFX-020-01",
+      "subject_symbol": "listRegistration",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetRegistrationByUserID"
+        },
+        {
+          "action": "read",
+          "entity": "GetRegistrationByLectureID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/list",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "GetRegistrationByUserID",
+          "GetRegistrationByLectureID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "lectureID": "string",
+        "status": "string",
+        "offset": "string",
+        "limit": "string",
+        "year": "string",
+        "semester": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "listRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-021-R-001",
+      "entrypoint_id": "EP-021",
+      "effect_id": "EFX-021-01",
+      "subject_symbol": "addRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "Registration"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/add",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "Registration"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "lectureID": "string",
+        "forced": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "addRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-022-R-001",
+      "entrypoint_id": "EP-022",
+      "effect_id": "EFX-022-01",
+      "subject_symbol": "updateBoard",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Board"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/update/info",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "Board"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateBoard"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "boardID": "string",
+        "title": "string",
+        "body": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "updateBoard"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-023-R-001",
+      "entrypoint_id": "EP-023",
+      "effect_id": "EFX-023-01",
+      "subject_symbol": "listDrive",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "r.drive.List(ctx, directoryID)"
+        }
+      ],
+      "side_effects": [
+        {
+          "kind": "external_api",
+          "target": "Google Drive API"
+        }
+      ],
+      "domain_context": {
+        "source_module": "pati-server/api/drive.go.json",
+        "route": "POST /api/v1/drive/list",
+        "domain_group": "DG-DRIVE",
+        "entity_types": [
+          "r.drive.List(ctx, directoryID)"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listDrive"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string",
+        "name": "string",
+        "driveID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/drive.go.json",
+          "symbol": "listDrive"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-024-R-001",
+      "entrypoint_id": "EP-024",
+      "effect_id": "EFX-024-01",
+      "subject_symbol": "updateUser",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "User"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/update/info",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "User"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateUser"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "type": "string",
+        "koreanName": "string",
+        "englishName": "string",
+        "birth": "string",
+        "email": "string",
+        "primaryPhone": "string",
+        "address": "string",
+        "alias": "string",
+        "chineseName": "string",
+        "secondaryPhone": "string",
+        "imageURL": "string",
+        "grade": "string",
+        "status": "string",
+        "entranceDate": "string",
+        "entranceYear": "string",
+        "entranceSemester": "string",
+        "graduatedDate": "string",
+        "graduatedYear": "string",
+        "graduatedSemester": "string",
+        "emergencyPhone": "string",
+        "emergencyRelation": "string",
+        "score": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "updateUser"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-025-R-001",
+      "entrypoint_id": "EP-025",
+      "effect_id": "EFX-025-01",
+      "subject_symbol": "exportRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetRegistrationStats"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/export",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "GetRegistrationStats"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "exportRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "year": "string",
+        "semester": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "exportRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-026-R-001",
+      "entrypoint_id": "EP-026",
+      "effect_id": "EFX-026-01",
+      "subject_symbol": "listGraduatedTerm",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetGraduatedTerm"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/term.go.json",
+        "route": "POST /api/v1/term/graduated/list",
+        "domain_group": "DG-TERM",
+        "entity_types": [
+          "GetGraduatedTerm"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listGraduatedTerm"
+      },
+      "request_schema": {
+        "sessionID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/term.go.json",
+          "symbol": "listGraduatedTerm"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-027-R-001",
+      "entrypoint_id": "EP-027",
+      "effect_id": "EFX-027-01",
+      "subject_symbol": "reportRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetRegistrationReport"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/report",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "GetRegistrationReport"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "reportRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "reportRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-028-R-001",
+      "entrypoint_id": "EP-028",
+      "effect_id": "EFX-028-01",
+      "subject_symbol": "updateEvaluation",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isStudent == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Evaluation"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/evaluation.go.json",
+        "route": "POST /api/v1/evaluation/update",
+        "domain_group": "DG-EVALUATION",
+        "entity_types": [
+          "Evaluation"
+        ]
+      },
+      "trigger": {
+        "actor": "student_user",
+        "action": "updateEvaluation"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "satisfaction": "string",
+        "achievement": "string",
+        "positive": "string",
+        "negative": "string",
+        "comment": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/evaluation.go.json",
+          "symbol": "updateEvaluation"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-029-R-001",
+      "entrypoint_id": "EP-029",
+      "effect_id": "EFX-029-01",
+      "subject_symbol": "getBoard",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetBoardByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/get",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "GetBoardByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "getBoard"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "boardID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "getBoard"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-030-R-001",
+      "entrypoint_id": "EP-030",
+      "effect_id": "EFX-030-01",
+      "subject_symbol": "resetUserPassword",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "reset",
+          "entity": "UserPassword"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/reset/password",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "UserPassword"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "resetUserPassword"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "resetUserPassword"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-031-R-001",
+      "entrypoint_id": "EP-031",
+      "effect_id": "EFX-031-01",
+      "subject_symbol": "listBoard",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetBoardByType"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/list",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "GetBoardByType"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "listBoard"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "type": "string",
+        "offset": "string",
+        "limit": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "listBoard"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-032-R-001",
+      "entrypoint_id": "EP-032",
+      "effect_id": "EFX-032-01",
+      "subject_symbol": "updateLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Lecture"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/update/info",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "Lecture"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "category": "string",
+        "classroom": "string",
+        "limit": "string",
+        "schedule": "string",
+        "description": "string",
+        "attachmentUrl": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "updateLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-033-R-001",
+      "entrypoint_id": "EP-033",
+      "effect_id": "EFX-033-01",
+      "subject_symbol": "logout",
+      "guard_predicates": [],
+      "guard_failure": [],
+      "success_writes": [],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/logout",
+        "domain_group": "DG-USER",
+        "entity_types": []
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "logout"
+      },
+      "request_schema": {
+        "sessionID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "logout"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-034-R-001",
+      "entrypoint_id": "EP-034",
+      "effect_id": "EFX-034-01",
+      "subject_symbol": "updateTerm",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Term"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/term.go.json",
+        "route": "POST /api/v1/term/update",
+        "domain_group": "DG-TERM",
+        "entity_types": [
+          "Term"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateTerm"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "year": "string",
+        "semester": "string",
+        "status": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/term.go.json",
+          "symbol": "updateTerm"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-035-R-001",
+      "entrypoint_id": "EP-035",
+      "effect_id": "EFX-035-01",
+      "subject_symbol": "removeLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "remove",
+          "entity": "Lecture"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/remove",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "Lecture"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "removeLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "removeLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-036-R-001",
+      "entrypoint_id": "EP-036",
+      "effect_id": "EFX-036-01",
+      "subject_symbol": "getCertificateByUserID",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isStudent == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCertificateByUserID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/certificate.go.json",
+        "route": "POST /api/v1/certificate/getByUserID",
+        "domain_group": "DG-CERTIFICATE",
+        "entity_types": [
+          "GetCertificateByUserID"
+        ]
+      },
+      "trigger": {
+        "actor": "student_user",
+        "action": "getCertificateByUserID"
+      },
+      "request_schema": {
+        "sessionID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/certificate.go.json",
+          "symbol": "getCertificateByUserID"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-037-R-001",
+      "entrypoint_id": "EP-037",
+      "effect_id": "EFX-037-01",
+      "subject_symbol": "setAttendance",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "set",
+          "entity": "Attendance"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/attendance.go.json",
+        "route": "POST /api/v1/attendance/set",
+        "domain_group": "DG-ATTENDANCE",
+        "entity_types": [
+          "Attendance"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "setAttendance"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "round": "string",
+        "attendance": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/attendance.go.json",
+          "symbol": "setAttendance"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-038-R-001",
+      "entrypoint_id": "EP-038",
+      "effect_id": "EFX-038-01",
+      "subject_symbol": "updateRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "Registration"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/update",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "Registration"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "registrationID": "string",
+        "status": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "updateRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-039-R-001",
+      "entrypoint_id": "EP-039",
+      "effect_id": "EFX-039-01",
+      "subject_symbol": "listCertificate",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCertificateList"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/certificate.go.json",
+        "route": "POST /api/v1/certificate/list",
+        "domain_group": "DG-CERTIFICATE",
+        "entity_types": [
+          "GetCertificateList"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "listCertificate"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/certificate.go.json",
+          "symbol": "listCertificate"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-040-R-001",
+      "entrypoint_id": "EP-040",
+      "effect_id": "EFX-040-01",
+      "subject_symbol": "getCourse",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCourseByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/get",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "GetCourseByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "getCourse"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "courseID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "getCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-041-R-001",
+      "entrypoint_id": "EP-041",
+      "effect_id": "EFX-041-01",
+      "subject_symbol": "updateUserPicture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "UserPicture"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/update/picture",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "UserPicture"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateUserPicture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "image": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "updateUserPicture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-042-R-001",
+      "entrypoint_id": "EP-042",
+      "effect_id": "EFX-042-01",
+      "subject_symbol": "listUser",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "write",
+          "entity": "GetUserByPermission"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/list",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "GetUserByPermission"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "listUser"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "offset": "string",
+        "limit": "string",
+        "type": "string",
+        "name": "string",
+        "year": "string",
+        "grade": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "listUser"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-043-R-001",
+      "entrypoint_id": "EP-043",
+      "effect_id": "EFX-043-01",
+      "subject_symbol": "exportCourse",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCourse"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/export",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "GetCourse"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "exportCourse"
+      },
+      "request_schema": {
+        "sessionID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "exportCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-044-R-001",
+      "entrypoint_id": "EP-044",
+      "effect_id": "EFX-044-01",
+      "subject_symbol": "removeCourse",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "remove",
+          "entity": "Course"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/course.go.json",
+        "route": "POST /api/v1/course/remove",
+        "domain_group": "DG-COURSE",
+        "entity_types": [
+          "Course"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "removeCourse"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "courseID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/course.go.json",
+          "symbol": "removeCourse"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-045-R-001",
+      "entrypoint_id": "EP-045",
+      "effect_id": "EFX-045-01",
+      "subject_symbol": "addSpringRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetLectureByID"
+        },
+        {
+          "action": "read",
+          "entity": "r.registration.StoreRequest(registrationReq)"
+        }
+      ],
+      "side_effects": [
+        {
+          "kind": "async_queue",
+          "target": "StoreRequest (async registration)"
+        }
+      ],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/spring/add",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "GetLectureByID",
+          "r.registration.StoreRequest(registrationReq)"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addSpringRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "lectureID": "string",
+        "forced": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "addSpringRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-046-R-001",
+      "entrypoint_id": "EP-046",
+      "effect_id": "EFX-046-01",
+      "subject_symbol": "exportAttendance",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isEmployee == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetAttendanceStats"
+        },
+        {
+          "action": "read",
+          "entity": "GetLectureByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/attendance.go.json",
+        "route": "POST /api/v1/attendance/export",
+        "domain_group": "DG-ATTENDANCE",
+        "entity_types": [
+          "GetAttendanceStats",
+          "GetLectureByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee, Professor)",
+        "action": "exportAttendance"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/attendance.go.json",
+          "symbol": "exportAttendance"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-047-R-001",
+      "entrypoint_id": "EP-047",
+      "effect_id": "EFX-047-01",
+      "subject_symbol": "addLecture",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "Lecture"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/add",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "Lecture"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "courseID": "string",
+        "userID": "string",
+        "year": "string",
+        "semester": "string",
+        "category": "string",
+        "classroom": "string",
+        "limit": "string",
+        "schedule": "string",
+        "description": "string",
+        "file": "string",
+        "attachmentUrl": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "addLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-048-R-001",
+      "entrypoint_id": "EP-048",
+      "effect_id": "EFX-048-01",
+      "subject_symbol": "updateBoardAttachment",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "BoardAttachment"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/update/attachment",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "BoardAttachment"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateBoardAttachment"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "boardID": "string",
+        "file": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "updateBoardAttachment"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-049-R-001",
+      "entrypoint_id": "EP-049",
+      "effect_id": "EFX-049-01",
+      "subject_symbol": "downloadDrive",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "r.drive.Download(ctx, driveID)"
+        }
+      ],
+      "side_effects": [
+        {
+          "kind": "file_stream",
+          "target": "Drive file download"
+        }
+      ],
+      "domain_context": {
+        "source_module": "pati-server/api/drive.go.json",
+        "route": "GET /api/v1/drive/download",
+        "domain_group": "DG-DRIVE",
+        "entity_types": [
+          "r.drive.Download(ctx, driveID)"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "downloadDrive"
+      },
+      "request_schema": {},
+      "evidence": [
+        {
+          "file": "pati-server/api/drive.go.json",
+          "symbol": "downloadDrive"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-050-R-001",
+      "entrypoint_id": "EP-050",
+      "effect_id": "EFX-050-01",
+      "subject_symbol": "getLecture",
+      "guard_predicates": [
+        "valid session required"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetLectureByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/get",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "GetLectureByID"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "getLecture"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "getLecture"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-051-R-001",
+      "entrypoint_id": "EP-051",
+      "effect_id": "EFX-051-01",
+      "subject_symbol": "getCertificateByID",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetCertificateByID"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/certificate.go.json",
+        "route": "POST /api/v1/certificate/getByID",
+        "domain_group": "DG-CERTIFICATE",
+        "entity_types": [
+          "GetCertificateByID"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "getCertificateByID"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "id": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/certificate.go.json",
+          "symbol": "getCertificateByID"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-052-R-001",
+      "entrypoint_id": "EP-052",
+      "effect_id": "EFX-052-01",
+      "subject_symbol": "removeRegistration",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isStudent == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "remove",
+          "entity": "Registration"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/remove",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "Registration"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Student)",
+        "action": "removeRegistration"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "registrationID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "removeRegistration"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-053-R-001",
+      "entrypoint_id": "EP-053",
+      "effect_id": "EFX-053-01",
+      "subject_symbol": "addBoard",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "Board"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/add",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "Board"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addBoard"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "type": "string",
+        "title": "string",
+        "body": "string",
+        "file": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "addBoard"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-054-R-001",
+      "entrypoint_id": "EP-054",
+      "effect_id": "EFX-054-01",
+      "subject_symbol": "exportUser",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isEmployee == true",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetUser"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/export",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "GetUser"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Employee, Admin)",
+        "action": "exportUser"
+      },
+      "request_schema": {
+        "sessionID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "exportUser"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-055-R-001",
+      "entrypoint_id": "EP-055",
+      "effect_id": "EFX-055-01",
+      "subject_symbol": "removeBoard",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "remove",
+          "entity": "Board"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/board.go.json",
+        "route": "POST /api/v1/board/remove",
+        "domain_group": "DG-NOTICE",
+        "entity_types": [
+          "Board"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "removeBoard"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "boardID": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/board.go.json",
+          "symbol": "removeBoard"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-056-R-001",
+      "entrypoint_id": "EP-056",
+      "effect_id": "EFX-056-01",
+      "subject_symbol": "addRegistrationBatch",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "RegistrationBatch"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/registration.go.json",
+        "route": "POST /api/v1/registration/add/batch",
+        "domain_group": "DG-REGISTRATION",
+        "entity_types": [
+          "RegistrationBatch"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "addRegistrationBatch"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userIDList": "string",
+        "lectureID": "string",
+        "forced": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/registration.go.json",
+          "symbol": "addRegistrationBatch"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-057-R-001",
+      "entrypoint_id": "EP-057",
+      "effect_id": "EFX-057-01",
+      "subject_symbol": "updateLectureAttachment",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "LectureAttachment"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/lecture.go.json",
+        "route": "POST /api/v1/lecture/update/attachment",
+        "domain_group": "DG-LECTURE",
+        "entity_types": [
+          "LectureAttachment"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateLectureAttachment"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "file": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/lecture.go.json",
+          "symbol": "updateLectureAttachment"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-058-R-001",
+      "entrypoint_id": "EP-058",
+      "effect_id": "EFX-058-01",
+      "subject_symbol": "issueCertificate",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "add",
+          "entity": "CertificateList"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/certificate.go.json",
+        "route": "POST /api/v1/certificate/issue",
+        "domain_group": "DG-CERTIFICATE",
+        "entity_types": [
+          "CertificateList"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "issueCertificate"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "idList": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/certificate.go.json",
+          "symbol": "issueCertificate"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-059-R-001",
+      "entrypoint_id": "EP-059",
+      "effect_id": "EFX-059-01",
+      "subject_symbol": "updateUserPassword",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [
+        {
+          "action": "update",
+          "entity": "UserPassword"
+        }
+      ],
+      "success_reads": [],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/user.go.json",
+        "route": "POST /api/v1/user/update/password",
+        "domain_group": "DG-USER",
+        "entity_types": [
+          "UserPassword"
+        ]
+      },
+      "trigger": {
+        "actor": "admin_user",
+        "action": "updateUserPassword"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "userID": "string",
+        "oldPassword": "string",
+        "newPassword": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/user.go.json",
+          "symbol": "updateUserPassword"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "EP-060-R-001",
+      "entrypoint_id": "EP-060",
+      "effect_id": "EFX-060-01",
+      "subject_symbol": "listAttendance",
+      "guard_predicates": [
+        "valid session required",
+        "user.type.isAdmin == true",
+        "user.type.isEmployee == true",
+        "user.type.isProfessor == true"
+      ],
+      "guard_failure": [
+        {
+          "guard_condition": "session invalid or missing",
+          "error_name": "ErrUnauthorized",
+          "http_status": 401
+        },
+        {
+          "guard_condition": "user lacks required role",
+          "error_name": "ErrForbidden",
+          "http_status": 403
+        }
+      ],
+      "success_writes": [],
+      "success_reads": [
+        {
+          "action": "read",
+          "entity": "GetAttendance"
+        }
+      ],
+      "side_effects": [],
+      "domain_context": {
+        "source_module": "pati-server/api/attendance.go.json",
+        "route": "POST /api/v1/attendance/list",
+        "domain_group": "DG-ATTENDANCE",
+        "entity_types": [
+          "GetAttendance"
+        ]
+      },
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee, Professor)",
+        "action": "listAttendance"
+      },
+      "request_schema": {
+        "sessionID": "string",
+        "lectureID": "string",
+        "round": "string"
+      },
+      "evidence": [
+        {
+          "file": "pati-server/api/attendance.go.json",
+          "symbol": "listAttendance"
+        }
+      ],
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "CP-001-R-001",
+      "entrypoint_id": "EP-012",
+      "effect_id": null,
+      "source": "client",
+      "component": "views/admin/certificate/IssueCertificate.vue",
+      "capability": "졸업증명서 발급 화면에서 졸업 대상자를 졸업학기·배움과정·국문이름으로 클라이언트 로컬 필터링할 수 있다",
+      "behavior_type": "client_filter",
+      "filter_fields": [
+        {
+          "field": "student.graduated.year + student.graduated.semester",
+          "label": "졸업학기"
+        },
+        {
+          "field": "degree",
+          "label": "배움과정"
+        },
+        {
+          "field": "name.korean",
+          "label": "국문이름"
+        }
+      ],
+      "reset_action": "handleSearchResetButton",
+      "related_backend_ep": "EP-012",
+      "evidence": {
+        "file": "views/admin/certificate/IssueCertificate.vue",
+        "symbol": "filteredUserList",
+        "reason": "백엔드 listCandidate(EP)는 pagination 파라미터만 받음. 컴포넌트가 limit=1000으로 전체를 받아 client-side .filter()로 졸업학기·배움과정·국문이름을 필터링"
+      },
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "CP-002-R-001",
+      "entrypoint_id": null,
+      "effect_id": null,
+      "source": "client",
+      "component": "views/admin/academic_manage/operation/Operation.vue",
+      "capability": "학기 상태가 FINISHED이면 해당 학기의 모든 상태 변경 UI가 비활성화된다 (종강 불가역성 표시)",
+      "behavior_type": "conditional_display",
+      "condition": "term[year+semester] === 'FINISHED'",
+      "affected_elements": [
+        "radio button: READY",
+        "radio button: APPLYING",
+        "radio button: PROCEEDING",
+        "radio button: FINISHED",
+        "확인 button"
+      ],
+      "related_backend_ep": "EP-034",
+      "evidence": {
+        "file": "views/admin/academic_manage/operation/Operation.vue",
+        "symbol": "disabled binding on radio inputs",
+        "reason": "!isAdmin || term[l.year+l.semester] === 'FINISHED' 조건으로 FINISHED 상태의 학기는 모든 라디오 버튼이 비활성화. 백엔드에서도 FINISHED 이후 변경은 막히지만 UI 레벨에서 명시적으로 불가역성을 표시"
+      },
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    },
+    {
+      "rule_id": "CP-003-R-001",
+      "entrypoint_id": null,
+      "effect_id": null,
+      "source": "client",
+      "component": "views/admin/academic_manage/operation/Operation.vue",
+      "capability": "학기를 종강(FINISHED) 상태로 변경할 때 '종강하겠습니다.' 텍스트 입력으로 불가역 작업을 확인해야 한다",
+      "behavior_type": "conditional_display",
+      "condition": "status === 'FINISHED'",
+      "required_text": "종강하겠습니다.",
+      "related_backend_ep": "EP-034",
+      "evidence": {
+        "file": "views/admin/academic_manage/operation/Operation.vue",
+        "symbol": "submit() - status === 'FINISHED' branch",
+        "reason": "FINISHED 상태로 변경할 때만 텍스트 입력 확인 다이얼로그가 뜨고, '종강하겠습니다.'를 정확히 입력해야만 진행 가능. 다른 상태 변경은 단순 yes/no 확인"
+      },
+      "confidence": "high",
+      "terminology_status": "ungrounded"
+    }
+  ],
+  "total": 63,
+  "confidence_breakdown": {
+    "high": 63,
+    "medium": 0,
+    "low": 0
+  }
+}

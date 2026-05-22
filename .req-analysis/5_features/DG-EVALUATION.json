@@ -1,0 +1,133 @@
+{
+  "domain_group": "DG-EVALUATION",
+  "features": [
+    {
+      "feature_id": "FR-EVAL-001",
+      "capability": "강의평가를 등록할 수 있다",
+      "trigger": {
+        "actor": "student_user",
+        "action": "POST /api/v1/evaluation/add"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Student 권한이 있어야 한다",
+          "해당 강의에 승인된 수강신청(APPROVED)이 있어야 한다",
+          "중복 평가가 없어야 한다"
+        ],
+        "postconditions": [
+          "강의평가가 등록된다",
+          "수강신청의 평가 완료 상태가 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "승인된 수강신청 없음 → 평가 불가",
+          "중복 평가 → 오류 반환"
+        ]
+      },
+      "ui": {
+        "display_fields": [
+          "satisfaction",
+          "achievement",
+          "positive",
+          "negative",
+          "comment"
+        ],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-EVALUATION-C-001",
+        "EP-001-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-EVAL-002",
+      "capability": "강의평가를 수정할 수 있다",
+      "trigger": {
+        "actor": "student_user",
+        "action": "POST /api/v1/evaluation/update"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Student 권한이 있어야 한다",
+          "해당 강의에 승인된 수강신청이 있어야 한다"
+        ],
+        "postconditions": [
+          "강의평가의 점수 및 주관식 항목이 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-EVALUATION-C-001",
+        "EP-028-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-EVAL-003",
+      "capability": "본인의 강의평가를 조회할 수 있다",
+      "trigger": {
+        "actor": "student_user",
+        "action": "POST /api/v1/evaluation/get"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Student 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "해당 강의에 대한 본인의 강의평가를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-EVALUATION-C-002",
+        "EP-008-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-EVAL-004",
+      "capability": "강의평가 목록을 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee, Professor)",
+        "action": "POST /api/v1/evaluation/list"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin, Employee 또는 Professor 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "특정 강의(lectureID)의 강의평가 목록과 페이지네이션 정보를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-EVALUATION-C-002",
+        "EP-002-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}

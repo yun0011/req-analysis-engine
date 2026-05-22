@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+.DS_Store
+target_legacy_code/pati-client/
+target_legacy_code/pati-server/
+analysis_output/pati-server/
+vue_output/
+global_call_graph.json

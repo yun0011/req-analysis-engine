@@ -1,0 +1,98 @@
+{
+  "domain_group": "DG-ATTENDANCE",
+  "features": [
+    {
+      "feature_id": "FR-ATT-001",
+      "capability": "출석을 입력할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Professor)",
+        "action": "POST /api/v1/attendance/set"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 Professor 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "특정 강의의 특정 회차에 대한 수강생들의 출석 상태가 일괄 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-ATTENDANCE-C-001",
+        "EP-037-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-ATT-002",
+      "capability": "출석 현황을 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee, Professor)",
+        "action": "POST /api/v1/attendance/list"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin, Employee 또는 Professor 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "강의ID와 회차(round)로 필터링된 출석 목록을 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "registration",
+          "round",
+          "status"
+        ],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-ATTENDANCE-C-002",
+        "EP-060-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-ATT-003",
+      "capability": "출석 통계를 Excel 파일로 내보낼 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee)",
+        "action": "POST /api/v1/attendance/export"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 Employee 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "특정 강의의 출석 통계와 강의 정보가 Excel(.xlsx) 파일로 반환된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-ATTENDANCE-C-002",
+        "EP-046-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}

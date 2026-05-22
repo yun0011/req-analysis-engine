@@ -1,0 +1,418 @@
+{
+  "domain_group": "DG-USER",
+  "features": [
+    {
+      "feature_id": "FR-USER-001",
+      "capability": "로그인 아이디와 비밀번호로 로그인할 수 있다",
+      "trigger": {
+        "actor": "unauthenticated_user",
+        "action": "POST /api/v1/user/login"
+      },
+      "behavior": {
+        "preconditions": [],
+        "postconditions": [
+          "세션이 생성되고 사용자 정보가 반환된다"
+        ],
+        "side_effects": [
+          "세션 저장소에 세션 등록"
+        ],
+        "guard_failure": [
+          "인증 실패 시 오류 반환"
+        ]
+      },
+      "ui": {
+        "display_fields": [
+          "sessionID",
+          "user.type"
+        ],
+        "display_labels": {},
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-USER-C-001",
+        "EP-009-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-002",
+      "capability": "로그아웃할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/user/logout"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "세션이 제거된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-001",
+        "EP-033-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-003",
+      "capability": "새 사용자를 등록할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/user/add"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "최고관리자(Admin) 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "사용자가 시스템에 등록된다",
+          "초기 비밀번호는 생년월일(YYYYMMDD)로 자동 설정된다",
+          "required_update_password가 TRUE로 설정된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "Admin 권한 없음 → ErrForbidden (403)"
+        ]
+      },
+      "field_constraints": [
+        "로그인 아이디(loginID)는 등록 후 변경할 수 없다",
+        "사용자 권한(type)은 등록 후 변경할 수 없다",
+        "졸업 정보(graduatedDate, graduatedSemester)는 선택 입력이다"
+      ],
+      "ui": {
+        "display_fields": [
+          "id",
+          "login_id",
+          "type",
+          "korean_name",
+          "english_name",
+          "grade",
+          "status"
+        ],
+        "display_labels": {
+          "grade": {
+            "H1": "한배곳 1",
+            "H2": "한배곳 2",
+            "H3": "한배곳 3",
+            "H4": "한배곳 4",
+            "D1": "더배곳 1",
+            "D2": "더배곳 2",
+            "DJ": "더배곳 진수"
+          },
+          "status": {
+            "ATTENDING": "재학",
+            "LEAVE": "휴학",
+            "GRADUATED": "졸업",
+            "COMPLETED": "수료",
+            "EXPELLED": "제적"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-USER-C-003",
+        "EP-011-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-004",
+      "capability": "사용자 목록을 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee)",
+        "action": "POST /api/v1/user/list"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 Employee 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "권한 유형(type), 이름(name), 배움과정(grade), 입학연도(year)로 필터링된 사용자 목록을 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "login_id",
+          "type",
+          "korean_name",
+          "english_name",
+          "grade",
+          "status",
+          "entrance.year"
+        ],
+        "display_labels": {
+          "grade": {
+            "H1": "한배곳 1",
+            "H2": "한배곳 2",
+            "H3": "한배곳 3",
+            "H4": "한배곳 4",
+            "D1": "더배곳 1",
+            "D2": "더배곳 2",
+            "DJ": "더배곳 진수"
+          },
+          "status": {
+            "ATTENDING": "재학",
+            "LEAVE": "휴학",
+            "GRADUATED": "졸업",
+            "COMPLETED": "수료",
+            "EXPELLED": "제적"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-USER-C-002",
+        "EP-042-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-005",
+      "capability": "특정 사용자 정보를 단건 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee)",
+        "action": "POST /api/v1/user/get"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "userID에 해당하는 사용자 정보를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-002",
+        "EP-007-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-006",
+      "capability": "사용자 정보를 수정할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/user/update/info"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "사용자의 이름, 연락처, 주소 등 정보가 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "Admin 권한 없음 → ErrForbidden (403)"
+        ]
+      },
+      "field_constraints": [
+        "로그인 아이디(loginID)는 수정할 수 없다",
+        "사용자 권한(type)은 수정할 수 없다",
+        "프로필 사진은 별도의 사진 수정 EP(updateUserPicture)를 통해서만 변경된다"
+      ],
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-003",
+        "EP-024-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-007",
+      "capability": "사용자 프로필 사진을 수정할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/user/update/picture"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "사용자의 프로필 사진이 업데이트된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-003",
+        "EP-041-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-008",
+      "capability": "비밀번호를 변경할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/user/update/password"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "기존 비밀번호(oldPassword)가 일치해야 한다"
+        ],
+        "postconditions": [
+          "비밀번호가 변경되고 required_update_password가 FALSE로 설정된다"
+        ],
+        "side_effects": [],
+        "guard_failure": [
+          "기존 비밀번호 불일치 → 오류 반환"
+        ]
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-004",
+        "EP-059-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-009",
+      "capability": "관리자가 사용자 비밀번호를 초기화할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/user/reset/password"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "비밀번호가 생년월일(YYYYMMDD)로 초기화되고 required_update_password가 TRUE로 설정된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-004",
+        "EP-030-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-010",
+      "capability": "사용자 목록을 Excel 파일로 내보낼 수 있다",
+      "trigger": {
+        "actor": "authenticated_user (Admin, Employee)",
+        "action": "POST /api/v1/user/export"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 또는 Employee 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "전체 사용자 목록이 Excel(.xlsx) 파일로 반환된다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": null,
+      "evidence_refs": [
+        "DG-USER-C-002",
+        "EP-054-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    },
+    {
+      "feature_id": "FR-USER-011",
+      "capability": "졸업 대상자 후보 목록을 조회할 수 있다",
+      "trigger": {
+        "actor": "admin_user",
+        "action": "POST /api/v1/user/candidate/list"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다",
+          "Admin 권한이 있어야 한다"
+        ],
+        "postconditions": [
+          "졸업증명서 발급 대상 후보 사용자 목록을 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "id",
+          "degree",
+          "name.korean",
+          "name.english",
+          "student.entrance",
+          "student.graduated"
+        ],
+        "display_labels": {
+          "degree": {
+            "H1": "한배곳 1",
+            "H2": "한배곳 2",
+            "H3": "한배곳 3",
+            "H4": "한배곳 4",
+            "D1": "더배곳 1",
+            "D2": "더배곳 2",
+            "DJ": "더배곳 진수"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": null
+      },
+      "evidence_refs": [
+        "DG-USER-C-002",
+        "EP-012-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}

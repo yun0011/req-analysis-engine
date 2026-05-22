@@ -1,0 +1,50 @@
+{
+  "domain_group": "DG-REQUEST",
+  "features": [
+    {
+      "feature_id": "FR-REQUEST-001",
+      "capability": "비동기 요청 처리 상태를 조회할 수 있다",
+      "trigger": {
+        "actor": "authenticated_user",
+        "action": "POST /api/v1/request/get/status"
+      },
+      "behavior": {
+        "preconditions": [
+          "유효한 세션이 있어야 한다"
+        ],
+        "postconditions": [
+          "requestID에 해당하는 비동기 요청의 처리 상태를 반환한다"
+        ],
+        "side_effects": [],
+        "guard_failure": []
+      },
+      "ui": {
+        "display_fields": [
+          "requestID",
+          "status"
+        ],
+        "display_labels": {
+          "status": {
+            "WAITING": "대기",
+            "APPROVED": "완료"
+          }
+        },
+        "validation_messages": [],
+        "disabled_conditions": [],
+        "confirmation_guard": null,
+        "polling": {
+          "interval_ms": 3000,
+          "termination_condition": "status != 'PENDING'",
+          "component": "components/Enrolment.vue (봄학기 수강신청 결과 확인)"
+        }
+      },
+      "evidence_refs": [
+        "DG-REQUEST-C-001",
+        "EP-005-R-001"
+      ],
+      "grounding_confidence": "high",
+      "terminology_status": "grounded",
+      "blocked_items": []
+    }
+  ]
+}
